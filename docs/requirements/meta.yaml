@@ -1,0 +1,19 @@
+id: requirements
+title: requirements
+path: docs/requirements
+parent: docs
+children: []
+purpose: プロダクトの要件定義を管理する。
+responsibility:
+  includes:
+    - 背景・目的の明確化
+    - ステークホルダーと役割定義
+    - 機能要件・非機能要件の定義
+    - スコープとMVPの決定
+  excludes:
+    - 開発プロセス
+    - 技術アーキテクチャ
+documents:
+  - id: requirements_spec
+    title: 要件定義書
+    path: docs/requirements/REQUIREMENTS.md

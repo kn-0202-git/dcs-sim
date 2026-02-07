@@ -1,0 +1,13 @@
+id: r_issue_logs
+title: r-issue logs
+path: docs/logs/r_issues
+parent: logs
+children: []
+purpose: r-issue課題ログを保存する。
+responsibility:
+  includes:
+    - r-issueごとの詳細記録
+    - 対応履歴
+  excludes:
+    - 要件定義
+documents: []

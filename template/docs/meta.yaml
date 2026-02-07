@@ -1,0 +1,19 @@
+id: docs
+title: documentation-root
+path: docs
+parent: null
+children:
+  - requirements
+  - process
+  - architecture
+  - logs
+purpose: ドキュメント階層と各フォルダの責務を定義する。
+responsibility:
+  includes:
+    - ドキュメント分類と責務の定義
+    - ドキュメント間の導線整理
+  excludes:
+    - プロダクト要件
+    - 実装詳細
+notes:
+  - [プロジェクト固有のメモ]

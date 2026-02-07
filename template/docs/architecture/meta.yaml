@@ -1,0 +1,18 @@
+id: architecture
+title: architecture
+path: docs/architecture
+parent: docs
+children: []
+purpose: 技術スタックとシステム構成を定義する。
+responsibility:
+  includes:
+    - 技術スタック選定
+    - システム構成
+    - データフロー
+  excludes:
+    - プロダクト要件
+    - 開発プロセス
+documents:
+  - id: architecture_overview
+    title: アーキテクチャ概要
+    path: docs/architecture/ARCHITECTURE.md

@@ -1,0 +1,15 @@
+id: handover
+title: handover
+path: docs/logs/handover
+parent: logs
+children: []
+purpose: 作業の引き継ぎ文書を管理する。
+responsibility:
+  includes:
+    - 作業内容の記録
+    - 次のアクションの明示
+    - 専門家ディスカッションの記録
+  excludes:
+    - 長期的な要件
+    - 技術設計
+documents: []

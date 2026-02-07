@@ -1,0 +1,14 @@
+id: issue_logs
+title: issue logs
+path: docs/logs/issues
+parent: logs
+children: []
+purpose: issue開発ログを保存する。
+responsibility:
+  includes:
+    - issueごとの開発記録
+    - 技術選定理由
+    - トラブルシューティング記録
+  excludes:
+    - 要件定義
+documents: []

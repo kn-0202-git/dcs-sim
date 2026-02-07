@@ -1,0 +1,57 @@
+version: 1
+root: docs
+meta_index: docs/meta.yaml
+folders:
+  - id: requirements
+    path: docs/requirements
+    meta: docs/requirements/meta.yaml
+    documents:
+      - id: requirements_spec
+        title: 要件定義書
+        path: docs/requirements/REQUIREMENTS.md
+        responsibility: プロダクトのスコープ、ゴール、機能/非機能要件
+        status: 有効
+  - id: process
+    path: docs/process
+    meta: docs/process/meta.yaml
+    documents:
+      - id: development_process
+        title: 開発プロセス
+        path: docs/process/DEVELOPMENT_PROCESS.md
+        responsibility: 開発フロー、TDD、Doneの定義
+        status: 有効
+      - id: plan
+        title: 開発計画
+        path: docs/process/PLAN.md
+        responsibility: step-issueとissueの計画、r-issue管理
+        status: 有効
+      - id: llm_guide
+        title: LLM運用ガイド
+        path: docs/process/LLM_GUIDE.md
+        responsibility: 複数LLM運用の共通ルール
+        status: 有効
+  - id: architecture
+    path: docs/architecture
+    meta: docs/architecture/meta.yaml
+    documents:
+      - id: architecture_overview
+        title: アーキテクチャ概要
+        path: docs/architecture/ARCHITECTURE.md
+        responsibility: 技術スタック、システム構成、データフロー
+        status: 有効
+  - id: logs
+    path: docs/logs
+    meta: docs/logs/meta.yaml
+    documents: []
+  - id: issue_logs
+    path: docs/logs/issues
+    meta: docs/logs/issues/meta.yaml
+    documents: []
+  - id: r_issue_logs
+    path: docs/logs/r_issues
+    meta: docs/logs/r_issues/meta.yaml
+    documents: []
+  - id: handover
+    path: docs/logs/handover
+    meta: docs/logs/handover/meta.yaml
+    documents: []

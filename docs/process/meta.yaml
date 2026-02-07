@@ -1,0 +1,25 @@
+id: process
+title: process
+path: docs/process
+parent: docs
+children: []
+purpose: 本プロジェクトの開発フローとTDD運用を定義する。
+responsibility:
+  includes:
+    - 開発フロー
+    - TDDの運用
+    - Doneの定義とレビュー観点
+  excludes:
+    - プロダクト要件
+    - 技術アーキテクチャ
+    - 運用設計
+documents:
+  - id: development_process
+    title: 開発プロセス
+    path: docs/process/DEVELOPMENT_PROCESS.md
+  - id: plan
+    title: 開発計画
+    path: docs/process/PLAN.md
+  - id: llm_guide
+    title: LLM運用ガイド
+    path: docs/process/LLM_GUIDE.md

@@ -1,0 +1,17 @@
+id: logs
+title: logs
+path: docs/logs
+parent: docs
+children:
+  - issues
+  - r_issues
+  - handover
+purpose: issue開発ログ、r-issue課題ログ、引き継ぎ文書を管理する。
+responsibility:
+  includes:
+    - issue/r-issueごとの記録
+    - 作業の引き継ぎ記録
+  excludes:
+    - 要件定義
+    - 長期計画
+documents: []
