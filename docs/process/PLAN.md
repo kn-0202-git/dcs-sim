@@ -25,9 +25,9 @@
 目的: コアロジックとコンポーネントの品質を担保するテストを追加する
 完了条件: 全テストケースがパスする
 対象issue:
-- Step2-1 [🔵 in_progress]: コアロジックテスト（computeReachableNodes, isPipeActive）
-- Step2-2 [🟡 open]: 教育ロジックテスト（csvParser, conditionEvaluator, ruleCheckEngine）
-- Step2-3 [🟡 open]: コンポーネントテスト（PIDSimulator統合テスト）
+- Step2-1 [✅ resolved]: コアロジックテスト（computeReachableNodes, isPipeActive）
+- Step2-2 [✅ resolved]: 教育ロジックテスト（csvParser, conditionEvaluator, ruleCheckEngine）
+- Step2-3 [✅ resolved]: コンポーネントテスト（PIDSimulator統合テスト）
 
 ## 5. r-issue リスト（課題管理）
 運用ルールは `docs/process/DEVELOPMENT_PROCESS.md` を参照
