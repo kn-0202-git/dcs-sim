@@ -43,6 +43,11 @@
 運用ルールは `docs/process/DEVELOPMENT_PROCESS.md` を参照
 
 - r1 / issue開発ログの作成漏れ（Step1-1〜1-4） / 改善 / 高 / ✅ resolved
+- r2 / Step3 issue開発ログのテンプレート不準拠（Step3-1〜3-5） / 改善 / 高 / ✅ resolved
+- r3 / Claude Code許可設定の整備 / 改善 / 中 / 🔵 in_progress
+- r4 / プラント差し替えガイドの構成改善（SVG作成ワークフロー + 非IT向けリライト） / 改善 / 中 / ✅ resolved
+- r5 / LLMがr-issueを認識・作成できない / 改善 / 高 / 🔵 in_progress
+- r6 / issue開発ログのテンプレート自動生成（Claude Code skill化） / 改善 / 中 / 🟡 open
 
 ## 6. issue開発ログ（参照）
 - 保存先: `docs/logs/issues/`

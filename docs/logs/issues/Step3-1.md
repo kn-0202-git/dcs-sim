@@ -1,32 +1,22 @@
-# Step3-1: データ層の疎結合化
+issue: Step3-1 [✅ resolved] データ層の疎結合化（P0 #1-3 + P1 #4-5）
+development log: sampleData.tsのallValveIds/allTankIds/nodeMap/initialTankFilled/initialValvesをnodes/pipesから自動導出に変更。tankIdMap（CSV条件短縮名→ノードIDマッピング）を追加。conditionEvaluator/ruleCheckEngineにtankIdMapパラメータ追加。PIDCanvasのキャンバスサイズをノード座標から自動算出。topologyValidator新規作成（ノード/パイプ/バルブID整合性チェック、devモード実行）。テスト9件追加。全95テストパス。
+technical/architecture reason: トポロジーデータと教育ロジック間の暗黙的な結合を排除し、別プラントへの差し替えをコード変更なしで可能にする設計。nodes/pipesのみ手動定義し、残りは自動導出することで手動同期のリスクを排除。tankIdMapはCSV条件式の`T1`→ノードID`tank-T1`の変換を明示化し、nodes配列のタンク出現順で番号付け。
+cautions: 既存テスト86件へのAPI後方互換性を維持（conditionEvaluatorのtankIdMapはoptionalパラメータ、デフォルトは従来の`tank-T${n}`フォールバック）。tankIdMapのタンク番号はnodes配列のタンク出現順（T1=最初のtank、T2=2番目のtank）。
+troubles: なし
+r-issue: なし
+edited documents: src/data/sampleData.ts, src/data/topologyValidator.ts（新規）, src/data/__tests__/topologyValidator.test.ts（新規）, src/education/conditionEvaluator.ts, src/education/ruleCheckEngine.ts, src/components/PIDCanvas.tsx, src/components/PIDSimulator.tsx
+next action: なし
 
-## 概要
-コードレビュー P0 #1-3 / P1 #4-5 の対応。トポロジーデータと教育ロジック間の暗黙的な結合を排除し、別プラントへの差し替えをコード変更なしで可能にする。
-
-## 対象ファイル
-- `src/data/sampleData.ts` — allValveIds/allTankIds/nodeMap/initialTankFilled を自動導出
-- `src/data/topologyValidator.ts` — 新規: トポロジー整合性チェック
-- `src/education/conditionEvaluator.ts` — tankIdMap パラメータ追加
-- `src/components/PIDCanvas.tsx` — キャンバスサイズ自動算出
-- `src/components/PIDSimulator.tsx` — tankIdMap の引き渡し、バリデーション呼び出し
-
-## 開発ログ
-
-### 技術的判断
-1. **allValveIds/allTankIds の自動導出**: nodes/pipes 配列から `filter` + `map` で導出。手動同期のリスクを排除。
-2. **tankIdMap**: CSV条件式の `T1` → ノードID `tank-T1` の変換マッピングを明示化。nodes 配列のタンク出現順で番号付け。
-3. **topologyValidator**: パイプの from/to 検証、重複ID検証。dev モードのみ実行。
-4. **キャンバスサイズ**: ノード座標の max + 固定マージンで算出。
-
-### 注意事項
-- 既存テスト86件への影響を最小限にする（API後方互換性を維持）
-- conditionEvaluator の tankIdMap は optional パラメータ（デフォルトは従来の `tank-T${n}` フォールバック）
-
-## チェックリスト
-- [ ] sampleData.ts の自動導出
-- [ ] topologyValidator.ts 新規作成
-- [ ] conditionEvaluator.ts tankIdMap 対応
-- [ ] PIDCanvas.tsx キャンバスサイズ自動算出
-- [ ] PIDSimulator.tsx tankIdMap 引き渡し
-- [ ] topologyValidator テスト作成
-- [ ] 既存テスト全パス確認
+checklist:
+- [x] Requirements reviewed (updated if needed)
+- [x] Plan issue set to `🔵 in_progress`
+- [x] Issue log created (`docs/logs/issues/Step3-1.md`)
+- [x] Tests written first (Red)
+- [x] Minimal implementation passes tests (Green)
+- [x] Refactor complete (Refactor)
+- [x] Tests executed after implementation, results verified
+- [x] r-issue recorded (or "none")
+- [x] Plan issue set to `✅ resolved`
+- [x] Requirements updated if spec changed
+- [x] Documentation meta updated if docs changed
+- [x] CLI/feature changes reflected in `README.md` user guide

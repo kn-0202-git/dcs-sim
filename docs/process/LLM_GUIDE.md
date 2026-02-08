@@ -12,7 +12,8 @@
 
 ## 3. issue着手時の必須アクション
 issueに着手する際は、**コードを書く前に**以下を必ず実行する:
-1. `docs/logs/issues/StepX-Y.md` を作成し、チェックリストを貼り付ける
+1. `docs/logs/issues/StepX-Y.md` を作成し、`docs/process/DEVELOPMENT_PROCESS.md` の記録テンプレート（L60-83）をそのまま貼り付ける
 2. `PLAN.md` のissueステータスを `🔵 in_progress` に更新する
 
 ログファイルの作成がissue開始の証跡となる。事後作成では記録の正確性が低下する（r1参照）。
+テンプレートを独自フォーマットに変えず、そのままの形式で使うこと（r2参照）。
