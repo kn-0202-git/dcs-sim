@@ -39,6 +39,15 @@ folders:
         path: docs/architecture/ARCHITECTURE.md
         responsibility: 技術スタック、システム構成、データフロー
         status: 有効
+  - id: guides
+    path: docs/guides
+    meta: docs/guides/meta.yaml
+    documents:
+      - id: plant_customization
+        title: プラント差し替えガイド
+        path: docs/guides/PLANT_CUSTOMIZATION.md
+        responsibility: SVG作成手順、命名規則、描画ルール、React組込み、CSV設定
+        status: 有効
   - id: logs
     path: docs/logs
     meta: docs/logs/meta.yaml

@@ -6,6 +6,7 @@ children:
   - requirements
   - process
   - architecture
+  - guides
   - logs
 purpose: ドキュメント階層と各フォルダの責務を定義する。
 responsibility:

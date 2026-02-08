@@ -1,0 +1,16 @@
+id: guides
+title: ガイドライン
+path: docs/guides
+parent: docs
+children: []
+purpose: プラント差し替え・カスタマイズのガイドラインを提供する。
+responsibility:
+  includes:
+    - プラント差し替え手順
+    - SVG作成ルール・命名規則
+    - CSV設定手順
+  excludes:
+    - 開発プロセス
+    - アーキテクチャ仕様
+documents:
+  - PLANT_CUSTOMIZATION.md
