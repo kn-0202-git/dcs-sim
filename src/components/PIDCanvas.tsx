@@ -29,8 +29,12 @@ export function PIDCanvas({
     return { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 };
   };
 
+  // ノード座標からキャンバスサイズを自動算出
+  const canvasWidth = nodes.length > 0 ? Math.max(...nodes.map(n => n.x)) + 70 : 600;
+  const canvasHeight = nodes.length > 0 ? Math.max(...nodes.map(n => n.y)) + 60 : 340;
+
   return (
-    <svg width="600" height="340" style={{ backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
+    <svg width={canvasWidth} height={canvasHeight} style={{ backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
       <defs>
         <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
           <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e5e7eb" strokeWidth="0.5"/>

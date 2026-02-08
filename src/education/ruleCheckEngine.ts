@@ -7,6 +7,7 @@ export function checkRules(
   rules: Rule[],
   currentPhaseId: string | undefined,
   allValveIds: number[],
+  tankIdMap: Record<string, string> = {},
 ): Violation[] {
   const violations: Violation[] = [];
 
@@ -17,7 +18,7 @@ export function checkRules(
       if (!currentPhaseId || !allowedPhases.includes(currentPhaseId)) continue;
     }
 
-    if (evaluateCondition(rule.condition, state, action, allValveIds)) {
+    if (evaluateCondition(rule.condition, state, action, allValveIds, tankIdMap)) {
       violations.push({
         id: rule.rule_id,
         name: rule.rule_name,

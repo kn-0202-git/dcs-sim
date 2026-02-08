@@ -1,3 +1,16 @@
+/**
+ * @deprecated このファイルは元のプロトタイプ実装です。
+ * 全機能は以下のTypeScriptモジュールに移行済み：
+ * - src/data/sampleData.ts (トポロジーデータ)
+ * - src/logic/computeReachableNodes.ts (BFS到達判定)
+ * - src/logic/isPipeActive.ts (配管通液判定)
+ * - src/education/csvParser.ts (CSVパーサー)
+ * - src/education/conditionEvaluator.ts (条件式評価)
+ * - src/education/ruleCheckEngine.ts (安全ルールチェック)
+ * - src/components/PIDSimulator.tsx (メインコンポーネント)
+ * - src/components/PIDCanvas.tsx (SVG描画)
+ * - src/components/CSVEditorPanel.tsx (CSV設定パネル)
+ */
 import React, { useState, useMemo, useCallback, useRef } from 'react';
 
 // ============================================

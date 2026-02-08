@@ -24,18 +24,35 @@ export const pipes: Pipe[] = [
   { id: 'p9', from: 'n5', to: 'outlet', valveId: 8 },
 ];
 
-export const allValveIds: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
-export const allTankIds: string[] = ['tank-T1', 'tank-T2'];
+// --- 以下すべて nodes/pipes から自動導出 ---
 
-export const nodeMap: Record<string, PIDNode> = {};
-nodes.forEach(n => { nodeMap[n.id] = n; });
+export const allValveIds: number[] = Array.from(
+  new Set(pipes.map(p => p.valveId).filter((id): id is number => id !== null))
+).sort((a, b) => a - b);
+
+export const allTankIds: string[] = nodes
+  .filter(n => n.type === 'tank')
+  .map(n => n.id);
+
+export const nodeMap: Record<string, PIDNode> = Object.fromEntries(
+  nodes.map(n => [n.id, n])
+);
+
+// CSV条件式の短縮名（T1, T2, ...）→ ノードID のマッピング
+// タンクの nodes 配列出現順で番号付け
+export const tankIdMap: Record<string, string> = Object.fromEntries(
+  nodes
+    .filter(n => n.type === 'tank')
+    .map((n, i) => [`T${i + 1}`, n.id])
+);
 
 export const initialValves: ValveState = Object.fromEntries(
   allValveIds.map(id => [id, false])
 );
 
-export const initialTankFilled: TankFilledState = {
-  'source': true,
-  'tank-T1': false,
-  'tank-T2': false,
-};
+// source は液あり、tank は空で初期化
+export const initialTankFilled: TankFilledState = Object.fromEntries(
+  nodes
+    .filter(n => n.type === 'source' || n.type === 'tank')
+    .map(n => [n.id, n.type === 'source'])
+);

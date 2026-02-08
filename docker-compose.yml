@@ -1,0 +1,22 @@
+services:
+  dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./src:/app/src
+      - ./index.html:/app/index.html
+      - ./vite.config.ts:/app/vite.config.ts
+    environment:
+      - NODE_ENV=development
+
+  prod:
+    build:
+      context: .
+      target: prod
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production

@@ -29,6 +29,16 @@
 - Step2-2 [✅ resolved]: 教育ロジックテスト（csvParser, conditionEvaluator, ruleCheckEngine）
 - Step2-3 [✅ resolved]: コンポーネントテスト（PIDSimulator統合テスト）
 
+### Step 3: コードレビュー指摘対応 + Docker + 疎結合化 + ガイドライン文書化
+目的: シニアエンジニアコードレビューの指摘に対応し、別プラント差し替えを可能にする疎結合設計、Docker環境、ガイドラインを整備する
+完了条件: 全テストパス、Docker dev/prod 動作、別トポロジーでコード変更なし動作
+対象issue:
+- Step3-1 [✅ resolved]: データ層の疎結合化（P0 #1-3 + P1 #4-5）
+- Step3-2 [✅ resolved]: Docker 環境構築
+- Step3-3 [✅ resolved]: 安全性強化（P1 #6-7 + P2 #10）
+- Step3-4 [✅ resolved]: プラント差し替えガイドライン文書化
+- Step3-5 [✅ resolved]: 整理・クリーンアップ
+
 ## 5. r-issue リスト（課題管理）
 運用ルールは `docs/process/DEVELOPMENT_PROCESS.md` を参照
 

@@ -1,7 +1,8 @@
 import { useState, useMemo, useCallback } from 'react';
 import type { ValveState, TankFilledState } from '../types';
 import type { Phase, Step, Rule, PhaseWithSteps, Violation } from '../education/types';
-import { nodes, pipes, allValveIds, nodeMap, initialValves, initialTankFilled } from '../data/sampleData';
+import { nodes, pipes, allValveIds, nodeMap, tankIdMap, initialValves, initialTankFilled } from '../data/sampleData';
+import { validateTopology } from '../data/topologyValidator';
 import { computeReachableNodes } from '../logic/computeReachableNodes';
 import { parseCSV, defaultPhasesCSV, defaultStepsCSV, defaultRulesCSV } from '../education/csvParser';
 import { evaluateCondition } from '../education/conditionEvaluator';
@@ -46,6 +47,14 @@ const s = {
     borderLeft: `3px solid ${severity === 'critical' ? '#ef4444' : '#f59e0b'}`, fontSize: '11px',
   }),
 };
+
+// dev モードでトポロジーの整合性を検証
+if (import.meta.env.DEV) {
+  const validation = validateTopology(nodes, pipes);
+  if (!validation.valid) {
+    console.error('Topology validation errors:', validation.errors);
+  }
+}
 
 export function PIDSimulator() {
   // CSV データ
@@ -100,10 +109,14 @@ export function PIDSimulator() {
     const action = { type: isOpening ? 'open_valve' as const : 'close_valve' as const, target: id };
 
     if (mode === 'training' && isOpening) {
-      const violations = checkRules(action, { valves, tanks: tankFilled }, rulesData, currentPhase?.phase_id, allValveIds);
-      if (violations.length > 0) {
-        setErrors(prev => [...violations, ...prev].slice(0, 5));
-        if (violations.some(v => v.severity === 'critical')) return;
+      try {
+        const violations = checkRules(action, { valves, tanks: tankFilled }, rulesData, currentPhase?.phase_id, allValveIds, tankIdMap);
+        if (violations.length > 0) {
+          setErrors(prev => [...violations, ...prev].slice(0, 5));
+          if (violations.some(v => v.severity === 'critical')) return;
+        }
+      } catch (e) {
+        console.error('Rule check failed:', e);
       }
     }
 
@@ -129,7 +142,7 @@ export function PIDSimulator() {
   // ステップ完了チェック
   const isStepComplete = useMemo(() => {
     if (!currentStep) return false;
-    return evaluateCondition(currentStep.condition, { valves, tanks: tankFilled }, null, allValveIds);
+    return evaluateCondition(currentStep.condition, { valves, tanks: tankFilled }, null, allValveIds, tankIdMap);
   }, [currentStep, valves, tankFilled]);
 
   // 次のステップへ

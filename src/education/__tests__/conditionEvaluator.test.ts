@@ -14,9 +14,9 @@ describe('evaluateCondition', () => {
       expect(evaluateCondition('', makeState())).toBe(true);
     });
 
-    it('不明な条件はtrueを返し、console.warnが呼ばれる', () => {
+    it('不明な条件はfalseを返し、console.warnが呼ばれる（fail-safe）', () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-      expect(evaluateCondition('UNKNOWN_CONDITION', makeState())).toBe(true);
+      expect(evaluateCondition('UNKNOWN_CONDITION', makeState())).toBe(false);
       expect(warnSpy).toHaveBeenCalledWith('Unknown condition:', 'UNKNOWN_CONDITION');
       warnSpy.mockRestore();
     });

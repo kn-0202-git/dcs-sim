@@ -55,22 +55,28 @@ export function CSVEditorPanel({ phasesData, stepsData, rulesData, onApply, onCl
     try {
       if (type === 'phases') {
         const data = parseCSV<Phase>(editPhasesCSV);
-        if (!data[0]?.phase_id || !data[0]?.phase_name || !data[0]?.order) {
-          throw new Error('phases: phase_id, phase_name, order が必要です');
+        if (data.length === 0) throw new Error('phases: データが空です');
+        const invalid = data.filter(p => !p.phase_id || !p.phase_name || !p.order);
+        if (invalid.length > 0) {
+          throw new Error(`phases: 全行に phase_id, phase_name, order が必要です（${invalid.length}行不正）`);
         }
         onApply(data, stepsData, rulesData);
       }
       if (type === 'steps') {
         const data = parseCSV<Step>(editStepsCSV);
-        if (!data[0]?.phase_id || !data[0]?.step_id || !data[0]?.condition) {
-          throw new Error('steps: phase_id, step_id, condition が必要です');
+        if (data.length === 0) throw new Error('steps: データが空です');
+        const invalid = data.filter(s => !s.phase_id || !s.step_id || !s.condition);
+        if (invalid.length > 0) {
+          throw new Error(`steps: 全行に phase_id, step_id, condition が必要です（${invalid.length}行不正）`);
         }
         onApply(phasesData, data, rulesData);
       }
       if (type === 'rules') {
         const data = parseCSV<Rule>(editRulesCSV);
-        if (!data[0]?.rule_id || !data[0]?.condition) {
-          throw new Error('rules: rule_id, condition が必要です');
+        if (data.length === 0) throw new Error('rules: データが空です');
+        const invalid = data.filter(r => !r.rule_id || !r.condition);
+        if (invalid.length > 0) {
+          throw new Error(`rules: 全行に rule_id, condition が必要です（${invalid.length}行不正）`);
         }
         onApply(phasesData, stepsData, data);
       }

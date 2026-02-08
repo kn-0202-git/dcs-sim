@@ -5,18 +5,19 @@ export function evaluateCondition(
   state: SimulatorState,
   action: ValveAction | null = null,
   allValveIds: number[] = [],
+  tankIdMap: Record<string, string> = {},
 ): boolean {
   if (!conditionStr) return true;
 
   // AND/OR で分割
   if (conditionStr.includes(' AND ')) {
     return conditionStr.split(' AND ').every(c =>
-      evaluateCondition(c.trim(), state, action, allValveIds)
+      evaluateCondition(c.trim(), state, action, allValveIds, tankIdMap)
     );
   }
   if (conditionStr.includes(' OR ')) {
     return conditionStr.split(' OR ').some(c =>
-      evaluateCondition(c.trim(), state, action, allValveIds)
+      evaluateCondition(c.trim(), state, action, allValveIds, tankIdMap)
     );
   }
 
@@ -59,11 +60,13 @@ export function evaluateCondition(
   // タンク条件: T1=FILLED, T1=EMPTY
   const tankMatch = cond.match(/^T(\d+)=(FILLED|EMPTY)$/);
   if (tankMatch) {
-    const tankId = `tank-T${tankMatch[1]}`;
+    const shortName = `T${tankMatch[1]}`;
+    // tankIdMap があればそれを使用、なければ従来の命名規則にフォールバック
+    const tankId = tankIdMap[shortName] ?? `tank-T${tankMatch[1]}`;
     const expected = tankMatch[2] === 'FILLED';
     return tanks[tankId] === expected;
   }
 
   console.warn('Unknown condition:', cond);
-  return true;
+  return false;
 }
