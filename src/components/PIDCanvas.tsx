@@ -78,8 +78,8 @@ export function PIDCanvas({
         let stroke = '#9ca3af';
         if (hasFill) { fill = COLORS.tank.filled; stroke = '#22d3ee'; }
         else if (isReachable) { fill = COLORS.tank.reachedEmpty; stroke = '#34d399'; }
-        const w = node.type === 'source' ? 60 : node.type === 'outlet' ? 50 : 55;
-        const h = node.type === 'source' ? 50 : node.type === 'outlet' ? 40 : 45;
+        const w = node.type === 'input' ? 60 : node.type === 'outlet' ? 50 : 55;
+        const h = node.type === 'input' ? 50 : node.type === 'outlet' ? 40 : 45;
         return (
           <g key={node.id} onClick={() => node.type === 'tank' && onToggleTank(node.id)}
              style={{ cursor: node.type === 'tank' ? 'pointer' : 'default' }}>
@@ -103,7 +103,7 @@ export function PIDCanvas({
       {/* 接続点 */}
       {nodes.filter(n => !n.type).map(node => (
         <circle key={node.id} cx={node.x} cy={node.y} r={5}
-          fill={reachableNodes.has(node.id) ? COLORS.junction.active : COLORS.junction.inactive}
+          fill={reachableNodes.has(node.id) ? COLORS.connection.active : COLORS.connection.inactive}
           opacity={reachableNodes.has(node.id) ? 1 : PIPE_INACTIVE_OPACITY} />
       ))}
     </svg>

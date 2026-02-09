@@ -48,5 +48,16 @@ export function validateTopology(nodes: PIDNode[], pipes: Pipe[]): ValidationRes
     }
   }
 
+  // タンクID重複チェック
+  const seenTankIds = new Set<number>();
+  for (const node of nodes) {
+    if (node.tankId != null) {
+      if (seenTankIds.has(node.tankId)) {
+        errors.push(`タンクID重複: ${node.tankId}`);
+      }
+      seenTankIds.add(node.tankId);
+    }
+  }
+
   return { valid: errors.length === 0, errors };
 }

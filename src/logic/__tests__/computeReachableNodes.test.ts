@@ -12,11 +12,11 @@ const makePipe = (id: string, from: string, to: string, valveId: number | null):
 });
 
 // --- サンプルデータのトポロジーを使ったテスト ---
-// source → n1 (V1) → n2 (V2) → n3 (V3) → tank-T1 (V6) → n5 (V8) → outlet
+// input → n1 (V1) → n2 (V2) → n3 (V3) → tank-T1 (V6) → n5 (V8) → outlet
 //                        ↓ (V4)
 //                        n4 (V5) → tank-T2 (V7) → n5
 const sampleNodes: PIDNode[] = [
-  makeNode('source', 'source'),
+  makeNode('input', 'input'),
   makeNode('n1'),
   makeNode('n2'),
   makeNode('n3'),
@@ -28,7 +28,7 @@ const sampleNodes: PIDNode[] = [
 ];
 
 const samplePipes: Pipe[] = [
-  makePipe('p1', 'source', 'n1', null),
+  makePipe('p1', 'input', 'n1', null),
   makePipe('p2', 'n1', 'n2', 1),
   makePipe('p3', 'n2', 'n3', 2),
   makePipe('p4', 'n3', 'tank-T1', 3),
@@ -44,10 +44,10 @@ const allOpen: ValveState = { 1: true, 2: true, 3: true, 4: true, 5: true, 6: tr
 
 describe('computeReachableNodes', () => {
   describe('全バルブ閉', () => {
-    it('sourceのみ到達可能（p1にバルブなし→n1も到達）', () => {
-      const tankFilled: TankFilledState = { source: true, 'tank-T1': false, 'tank-T2': false };
+    it('inputのみ到達可能（p1にバルブなし→n1も到達）', () => {
+      const tankFilled: TankFilledState = { input: true, 'tank-T1': false, 'tank-T2': false };
       const result = computeReachableNodes(sampleNodes, samplePipes, allClosed, tankFilled);
-      expect(result).toContain('source');
+      expect(result).toContain('input');
       expect(result).toContain('n1'); // p1にバルブなし
       expect(result).not.toContain('n2');
       expect(result).not.toContain('tank-T1');
@@ -55,11 +55,11 @@ describe('computeReachableNodes', () => {
   });
 
   describe('単一パスの開通', () => {
-    it('V1,V2,V3を開くとsource→n1→n2→n3→tank-T1が到達', () => {
+    it('V1,V2,V3を開くとinput→n1→n2→n3→tank-T1が到達', () => {
       const valves: ValveState = { ...allClosed, 1: true, 2: true, 3: true };
-      const tankFilled: TankFilledState = { source: true, 'tank-T1': false, 'tank-T2': false };
+      const tankFilled: TankFilledState = { input: true, 'tank-T1': false, 'tank-T2': false };
       const result = computeReachableNodes(sampleNodes, samplePipes, valves, tankFilled);
-      expect(result).toContain('source');
+      expect(result).toContain('input');
       expect(result).toContain('n1');
       expect(result).toContain('n2');
       expect(result).toContain('n3');
@@ -73,7 +73,7 @@ describe('computeReachableNodes', () => {
   describe('分岐パス', () => {
     it('V1,V2,V4,V5を開くとtank-T2方面も到達', () => {
       const valves: ValveState = { ...allClosed, 1: true, 2: true, 4: true, 5: true };
-      const tankFilled: TankFilledState = { source: true, 'tank-T1': false, 'tank-T2': false };
+      const tankFilled: TankFilledState = { input: true, 'tank-T1': false, 'tank-T2': false };
       const result = computeReachableNodes(sampleNodes, samplePipes, valves, tankFilled);
       expect(result).toContain('n4');
       expect(result).toContain('tank-T2');
@@ -83,7 +83,7 @@ describe('computeReachableNodes', () => {
 
     it('V1,V2,V3,V4,V5を開くと両タンクに到達', () => {
       const valves: ValveState = { ...allClosed, 1: true, 2: true, 3: true, 4: true, 5: true };
-      const tankFilled: TankFilledState = { source: true, 'tank-T1': false, 'tank-T2': false };
+      const tankFilled: TankFilledState = { input: true, 'tank-T1': false, 'tank-T2': false };
       const result = computeReachableNodes(sampleNodes, samplePipes, valves, tankFilled);
       expect(result).toContain('tank-T1');
       expect(result).toContain('tank-T2');
@@ -93,7 +93,7 @@ describe('computeReachableNodes', () => {
   describe('空タンクによる遮断', () => {
     it('tank-T1が空のとき、T1到達後もn5へは進めない', () => {
       const valves: ValveState = { ...allClosed, 1: true, 2: true, 3: true, 6: true, 8: true };
-      const tankFilled: TankFilledState = { source: true, 'tank-T1': false, 'tank-T2': false };
+      const tankFilled: TankFilledState = { input: true, 'tank-T1': false, 'tank-T2': false };
       const result = computeReachableNodes(sampleNodes, samplePipes, valves, tankFilled);
       expect(result).toContain('tank-T1');
       expect(result).not.toContain('n5'); // 空タンクが遮断
@@ -102,7 +102,7 @@ describe('computeReachableNodes', () => {
 
     it('tank-T1が満のとき、T1経由でn5→outletに到達', () => {
       const valves: ValveState = { ...allClosed, 1: true, 2: true, 3: true, 6: true, 8: true };
-      const tankFilled: TankFilledState = { source: true, 'tank-T1': true, 'tank-T2': false };
+      const tankFilled: TankFilledState = { input: true, 'tank-T1': true, 'tank-T2': false };
       const result = computeReachableNodes(sampleNodes, samplePipes, valves, tankFilled);
       expect(result).toContain('tank-T1');
       expect(result).toContain('n5');
@@ -112,7 +112,7 @@ describe('computeReachableNodes', () => {
 
   describe('全開・全満', () => {
     it('全バルブ開・全タンク満で全ノード到達', () => {
-      const tankFilled: TankFilledState = { source: true, 'tank-T1': true, 'tank-T2': true };
+      const tankFilled: TankFilledState = { input: true, 'tank-T1': true, 'tank-T2': true };
       const result = computeReachableNodes(sampleNodes, samplePipes, allOpen, tankFilled);
       for (const node of sampleNodes) {
         expect(result).toContain(node.id);
@@ -120,15 +120,15 @@ describe('computeReachableNodes', () => {
     });
   });
 
-  describe('sourceが空', () => {
-    it('sourceが空ならどこにも到達しない', () => {
-      const tankFilled: TankFilledState = { source: false, 'tank-T1': false, 'tank-T2': false };
+  describe('inputが空', () => {
+    it('inputが空ならどこにも到達しない', () => {
+      const tankFilled: TankFilledState = { input: false, 'tank-T1': false, 'tank-T2': false };
       const result = computeReachableNodes(sampleNodes, samplePipes, allOpen, tankFilled);
       expect(result.size).toBe(0);
     });
 
     it('tank-T1だけ満ならT1のみ到達', () => {
-      const tankFilled: TankFilledState = { source: false, 'tank-T1': true, 'tank-T2': false };
+      const tankFilled: TankFilledState = { input: false, 'tank-T1': true, 'tank-T2': false };
       const result = computeReachableNodes(sampleNodes, samplePipes, allOpen, tankFilled);
       expect(result).toContain('tank-T1');
       expect(result).toContain('n5');
@@ -153,7 +153,7 @@ describe('computeReachableNodes', () => {
     });
 
     it('2ノード・1パイプ（バルブなし）', () => {
-      const nodes = [makeNode('a', 'source'), makeNode('b')];
+      const nodes = [makeNode('a', 'input'), makeNode('b')];
       const pipes = [makePipe('p', 'a', 'b', null)];
       const tankFilled: TankFilledState = { a: true };
       const result = computeReachableNodes(nodes, pipes, {}, tankFilled);

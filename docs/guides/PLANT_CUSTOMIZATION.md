@@ -38,10 +38,10 @@
 
 ### 2つの作成方式
 
-| 方式 | 概要 | 推奨 |
+| 方式 | 概要 | 状態 |
 |------|------|------|
-| **方式A: draw.io で SVG を作成** | draw.io（無料のブラウザツール）で配管図を描き、SVG ファイルとして書き出す。本ガイドの主題 | 推奨 |
-| **方式B: TypeScript 配列で定義** | `sampleData.ts` にノードと配管の座標・接続を直接書く。現行の開発用方式。[§7](#7-現行方式-typescript配列によるプラント定義) で解説 | 開発者向け |
+| **SVGファイル方式** | draw.io（無料のブラウザツール）で配管図を描き、SVG ファイルとして書き出す。本ガイドの主題 | 将来対応予定 |
+| **TypeScript配列方式（現行）** | `sampleData.ts` にノードと配管の座標・接続を直接書く。[§7](#7-現行方式-typescript配列によるプラント定義) で解説 | 現在稼働中 |
 
 ---
 
@@ -306,18 +306,37 @@ import plantSvgRaw from './assets/plant-sample.svg?raw';
 - SVG 内の各要素を `id` で特定し、状態に応じて `fill` や `stroke` を変更する
 - 例: `document.getElementById('pipe-1')` で要素を取得し、通液中なら `stroke="#22d3ee"` に変更
 
-### 6.2 ID・labelの利用箇所マップ
+### 6.2 プロパティの利用箇所マップ
 
-SVG ファイルの各プロパティが、アプリの UI でどこに使われるかの対応表です。
+SVG/TypeScript で定義する各プロパティが、アプリの UI でどこに使われるかの対応表です。
 
-| プロパティ | UIでの利用 | 例 |
-|-----------|-----------|-----|
-| `id` | SVG要素の特定。CSS セレクタ / JavaScript で動的スタイル適用 | `document.getElementById('pipe-1')` で色変更 |
-| label（テキスト） | SVG 上のテキスト表示（設備名、タンク名） | 「T-1」「液体A(供給)」と画面に表示 |
-| `valveId`（バルブ番号） | バルブ円内の番号表示 + CSV 条件式の `V{n}` と対応 | `valve-3` → 画面に「3」表示、CSV で `V3=OPEN` |
-| type（要素種別） | [描画ルール表（§3）](#3-画面に何が表示されるか描画ルール表)の形・サイズ・色・操作可否を決定 | type=tank → 55x45角丸四角、クリックで満/空切替 |
-| `x`, `y`（座標） | SVG上の配置座標（方式Bのみ）。方式Aではdraw.io上の配置で決まる | — |
-| `from`, `to`（接続先） | 配管の両端を定義。液体到達判定（BFS）の経路計算に使用 | from='input' to='connection-1' → 液が流れる経路 |
+#### ノード（機器）のプロパティ
+
+| プロパティ | 型 | 対象type | UIでの利用 |
+|-----------|-----|---------|-----------|
+| `id` | string | 全て | SVG要素の特定、動的スタイル適用 |
+| `x`, `y` | number | 全て | SVG上の配置座標（TypeScript配列方式のみ。SVG方式ではdraw.io上の配置で決まる） |
+| `label` | string | input, tank, outlet | SVG上のテキスト表示（設備名、タンク名） |
+| `type` | string | input, tank, outlet | [描画ルール表（§3）](#3-画面に何が表示されるか描画ルール表)の形・サイズ・色・操作可否を決定。接続点は省略 |
+| `tankId` | number | tank のみ | CSV条件式の `T{n}` と対応（例: `tankId: 1` → CSV で `T1=FILLED`） |
+
+#### 配管のプロパティ
+
+| プロパティ | 型 | UIでの利用 |
+|-----------|-----|-----------|
+| `id` | string | SVG要素の特定、動的スタイル適用 |
+| `from`, `to` | string | 配管の両端ノードIDを定義。液体到達判定（BFS）の経路計算に使用 |
+| `valveId` | number \| null | バルブ円内の番号表示 + CSV条件式の `V{n}` と対応（例: `valveId: 3` → CSV で `V3=OPEN`）。`null` はバルブなし |
+
+#### 型別プロパティマトリクス
+
+| プロパティ | input | tank | outlet | 接続点 (type省略) |
+|-----------|-------|------|--------|-----------------|
+| `id` | 必須 | 必須 | 必須 | 必須 |
+| `x`, `y` | 必須 | 必須 | 必須 | 必須 |
+| `label` | 推奨 | 推奨 | 推奨 | 不要 |
+| `type` | `'input'` | `'tank'` | `'outlet'` | 省略 |
+| `tankId` | — | 必須 | — | — |
 
 ### 6.3 バルブ⇔配管の対応表（マッピング）
 
@@ -357,14 +376,14 @@ CSV 条件式の `V1`, `V2` は、マッピングテーブル上のバルブ番�
 import type { PIDNode, Pipe } from '../types';
 
 export const nodes: PIDNode[] = [
-  // type: 'source' — 液体供給元（1つ以上必要）
-  { id: 'source', x: 50, y: 200, label: '液体A\n(供給)', type: 'source' },
+  // type: 'input' — 液体供給元（1つ以上必要）
+  { id: 'input', x: 50, y: 200, label: '液体A\n(供給)', type: 'input' },
 
   // type なし — 接続点（パイプの分岐・合流点）
   { id: 'n1', x: 130, y: 200 },
 
-  // type: 'tank' — タンク（液体を貯留、クリックで満/空切替）
-  { id: 'tank-T1', x: 370, y: 200, label: 'T-1', type: 'tank' },
+  // type: 'tank' — タンク（液体を貯留、クリックで満/空切替）。tankId で CSV の T{n} と対応
+  { id: 'tank-T1', x: 370, y: 200, label: 'T-1', type: 'tank', tankId: 1 },
 
   // type: 'outlet' — 出口
   { id: 'outlet', x: 530, y: 240, label: '出口', type: 'outlet' },
@@ -379,13 +398,14 @@ export const nodes: PIDNode[] = [
 | `x` | number | はい | SVG上のX座標（ピクセル） |
 | `y` | number | はい | SVG上のY座標（ピクセル） |
 | `label` | string | いいえ | 表示ラベル。`\n` で改行可能 |
-| `type` | string | いいえ | `'source'` / `'tank'` / `'outlet'` / `'inlet'` / `'junction'`。未指定は接続点 |
+| `type` | string | いいえ | `'input'` / `'tank'` / `'outlet'`。未指定は接続点 |
+| `tankId` | number | tank のみ必須 | CSV条件式 `T{n}` の参照番号（例: `tankId: 1` → `T1`） |
 
 #### ノードタイプの動作
 
 | タイプ | SVG表示 | クリック | BFS動作 |
 |--------|---------|---------|---------|
-| `source` | 矩形（60x50） | 不可 | 液あり→BFS起点 |
+| `input` | 矩形（60x50） | 不可 | 液あり→BFS起点 |
 | `tank` | 矩形（55x45）+状態表示 | 満/空切替 | 液あり→BFS起点、空→通過遮断 |
 | `outlet` | 矩形（50x40） | 不可 | 通常ノード |
 | 未指定 | 小円（r=5） | 不可 | 通常ノード |
@@ -395,7 +415,7 @@ export const nodes: PIDNode[] = [
 ```typescript
 export const pipes: Pipe[] = [
   // バルブなし（常時開通）
-  { id: 'p1', from: 'source', to: 'n1', valveId: null },
+  { id: 'p1', from: 'input', to: 'n1', valveId: null },
 
   // バルブあり（V1で開閉制御）
   { id: 'p2', from: 'n1', to: 'n2', valveId: 1 },
@@ -418,7 +438,7 @@ export const pipes: Pipe[] = [
 - `allValveIds` — 全バルブID一覧
 - `allTankIds` — 全タンクID一覧
 - `nodeMap` — ノードID→ノードのルックアップ
-- `tankIdMap` — CSV短縮名（T1, T2）→ノードIDのマッピング
+- `tankIdMap` — CSV短縮名（T1, T2）→ノードIDのマッピング（各ノードの `tankId` プロパティから導出）
 - `initialValves` — 全バルブ閉の初期状態
 - `initialTankFilled` — source=液あり、tank=空の初期状態
 
@@ -486,7 +506,9 @@ rule-002,空タンク送液,OPENING:V6 AND T1=EMPTY,T1が空です,critical,all
 | `A AND B` | AかつB（AND は OR より優先度高） |
 | `A OR B` | AまたはB |
 
-**タンク番号の対応**: `T1`, `T2`, ... は `nodes` 配列のタンク出現順に対応します。
+**バルブ番号の対応**: `V{n}` はパイプ定義の `valveId` プロパティに対応します。例: `valveId: 3` のパイプ → CSV で `V3`。
+
+**タンク番号の対応**: `T{n}` はノード定義の `tankId` プロパティに対応します。例: `tankId: 1` のタンクノード → CSV で `T1`。
 
 ---
 
@@ -551,11 +573,11 @@ console.log(result.valid, result.errors);
 import type { PIDNode, Pipe, ValveState, TankFilledState } from '../types';
 
 export const nodes: PIDNode[] = [
-  { id: 'supply', x: 50, y: 150, label: '原料供給', type: 'source' },
+  { id: 'supply', x: 50, y: 150, label: '原料供給', type: 'input' },
   { id: 'j1', x: 150, y: 150 },
-  { id: 'reactor', x: 280, y: 150, label: '反応器', type: 'tank' },
+  { id: 'reactor', x: 280, y: 150, label: '反応器', type: 'tank', tankId: 1 },
   { id: 'j2', x: 400, y: 150 },
-  { id: 'storage', x: 530, y: 150, label: '貯蔵タンク', type: 'tank' },
+  { id: 'storage', x: 530, y: 150, label: '貯蔵タンク', type: 'tank', tankId: 2 },
   { id: 'drain', x: 650, y: 150, label: '排出', type: 'outlet' },
 ];
 
@@ -574,6 +596,6 @@ export const allTankIds = ...
 ```
 
 この場合のCSV条件式：
-- `T1=FILLED` → reactor（1番目のタンク）
-- `T2=FILLED` → storage（2番目のタンク）
-- `V1`〜`V4` → 4つのバルブ
+- `T1=FILLED` → reactor（`tankId: 1`）
+- `T2=FILLED` → storage（`tankId: 2`）
+- `V1`〜`V4` → 4つのバルブ（各パイプの `valveId` に対応）

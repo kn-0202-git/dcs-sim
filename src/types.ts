@@ -3,7 +3,8 @@ export interface PIDNode {
   x: number;
   y: number;
   label?: string;
-  type?: 'source' | 'inlet' | 'outlet' | 'tank' | 'junction';
+  type?: 'input' | 'outlet' | 'tank';
+  tankId?: number;
 }
 
 export interface Pipe {

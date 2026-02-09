@@ -12,7 +12,7 @@ const makePipe = (id: string, from: string, to: string, valveId: number | null):
 
 describe('validateTopology', () => {
   it('正常なトポロジーはvalid', () => {
-    const nodes = [makeNode('a', 'source'), makeNode('b', 'tank')];
+    const nodes = [makeNode('a', 'input'), makeNode('b', 'tank')];
     const pipes = [makePipe('p1', 'a', 'b', 1)];
     const result = validateTopology(nodes, pipes);
     expect(result.valid).toBe(true);
@@ -69,6 +69,25 @@ describe('validateTopology', () => {
     const result = validateTopology(nodes, pipes);
     expect(result.valid).toBe(false);
     expect(result.errors.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('タンクID重複を検出', () => {
+    const nodes: PIDNode[] = [
+      { id: 'a', x: 0, y: 0, type: 'tank', tankId: 1 },
+      { id: 'b', x: 0, y: 0, type: 'tank', tankId: 1 },
+    ];
+    const result = validateTopology(nodes, []);
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContainEqual(expect.stringContaining('タンクID重複'));
+  });
+
+  it('タンクIDが異なればvalid', () => {
+    const nodes: PIDNode[] = [
+      { id: 'a', x: 0, y: 0, type: 'tank', tankId: 1 },
+      { id: 'b', x: 0, y: 0, type: 'tank', tankId: 2 },
+    ];
+    const result = validateTopology(nodes, []);
+    expect(result.valid).toBe(true);
   });
 
   it('sampleDataのトポロジーはvalid', async () => {

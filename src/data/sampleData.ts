@@ -1,19 +1,19 @@
 import type { PIDNode, Pipe, ValveState, TankFilledState } from '../types';
 
 export const nodes: PIDNode[] = [
-  { id: 'source', x: 50, y: 200, label: '液体A\n(供給)', type: 'source' },
+  { id: 'input', x: 50, y: 200, label: '液体A\n(供給)', type: 'input' },
   { id: 'n1', x: 130, y: 200 },
   { id: 'n2', x: 210, y: 200 },
   { id: 'n3', x: 290, y: 200 },
   { id: 'n4', x: 290, y: 280 },
-  { id: 'tank-T1', x: 370, y: 200, label: 'T-1', type: 'tank' },
-  { id: 'tank-T2', x: 370, y: 280, label: 'T-2', type: 'tank' },
+  { id: 'tank-T1', x: 370, y: 200, label: 'T-1', type: 'tank', tankId: 1 },
+  { id: 'tank-T2', x: 370, y: 280, label: 'T-2', type: 'tank', tankId: 2 },
   { id: 'n5', x: 450, y: 240 },
   { id: 'outlet', x: 530, y: 240, label: '出口', type: 'outlet' },
 ];
 
 export const pipes: Pipe[] = [
-  { id: 'p1', from: 'source', to: 'n1', valveId: null },
+  { id: 'p1', from: 'input', to: 'n1', valveId: null },
   { id: 'p2', from: 'n1', to: 'n2', valveId: 1 },
   { id: 'p3', from: 'n2', to: 'n3', valveId: 2 },
   { id: 'p4', from: 'n3', to: 'tank-T1', valveId: 3 },
@@ -42,8 +42,8 @@ export const nodeMap: Record<string, PIDNode> = Object.fromEntries(
 // タンクの nodes 配列出現順で番号付け
 export const tankIdMap: Record<string, string> = Object.fromEntries(
   nodes
-    .filter(n => n.type === 'tank')
-    .map((n, i) => [`T${i + 1}`, n.id])
+    .filter(n => n.type === 'tank' && n.tankId != null)
+    .map(n => [`T${n.tankId}`, n.id])
 );
 
 export const initialValves: ValveState = Object.fromEntries(
@@ -53,6 +53,6 @@ export const initialValves: ValveState = Object.fromEntries(
 // source は液あり、tank は空で初期化
 export const initialTankFilled: TankFilledState = Object.fromEntries(
   nodes
-    .filter(n => n.type === 'source' || n.type === 'tank')
-    .map(n => [n.id, n.type === 'source'])
+    .filter(n => n.type === 'input' || n.type === 'tank')
+    .map(n => [n.id, n.type === 'input'])
 );

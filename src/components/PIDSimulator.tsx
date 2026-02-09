@@ -130,7 +130,7 @@ export function PIDSimulator() {
 
   // タンク操作
   const toggleTank = useCallback((id: string) => {
-    if (id === 'source') return;
+    if (nodeMap[id]?.type !== 'tank') return;
     setTankFilled(prev => ({ ...prev, [id]: !prev[id] }));
     setOperationLog(prev => [{
       time: new Date().toLocaleTimeString(),
