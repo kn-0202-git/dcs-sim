@@ -48,6 +48,9 @@
 - r4 / プラント差し替えガイドの構成改善（SVG作成ワークフロー + 非IT向けリライト） / 改善 / 中 / ✅ resolved
 - r5 / LLMがr-issueを認識・作成できない / 改善 / 高 / 🔵 in_progress
 - r6 / issue開発ログのテンプレート自動生成（Claude Code skill化） / 改善 / 中 / 🟡 open
+- r7 / 型名称の統一・ドキュメント改善・tankId 明示化 / 改善 / 高 / ✅ resolved
+- r8 / バルブの独立オブジェクト化検討 / 改善 / 中 / 🟡 open
+- r9 / GitHub Pages デプロイ / 機能追加 / 中 / ✅ resolved
 
 ## 6. issue開発ログ（参照）
 - 保存先: `docs/logs/issues/`

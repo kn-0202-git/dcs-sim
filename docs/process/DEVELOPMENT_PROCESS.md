@@ -121,6 +121,8 @@ checklist:
 - テスト(watch): `npm run test:watch`
 - ビルド: `npm run build`
 - プレビュー: `npm run preview`
+- デプロイ: main ブランチへの push で GitHub Pages に自動デプロイ
+- デプロイURL: `https://<user>.github.io/dcs-sim/`
 
 **言語別の実行手順は `docs/process/LANGUAGE_SPECIFIC_RULES.md` を参照**
 

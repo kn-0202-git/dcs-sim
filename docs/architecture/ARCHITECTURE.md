@@ -56,13 +56,18 @@ PIDSimulator (Root Component)
 4. React が SVG要素を新しい reachableNodes に基づいて再レンダリング
 5. 配管色、バルブ色、タンク色がリアクティブに更新
 
-## 7. 将来的な拡張候補（検討）
+## 7. デプロイ
+- GitHub Pages: main push 時に GitHub Actions で自動デプロイ（`.github/workflows/deploy.yml`）
+- Docker: dev（5173）/ prod（3000）マルチステージ（`Dockerfile` + `docker-compose.yml`）
+- ローカル: `npm run dev`（Vite dev server）
+
+## 8. 将来的な拡張候補（検討）
 - 流量表示（配管ごとの流量アニメーション）
 - 操作手順記録/再生
 - 複数液種対応（色分け）
 - アラーム機能
 - 設定保存/読込
 
-## 8. 関連ドキュメント
+## 9. 関連ドキュメント
 - 要件: `docs/requirements/REQUIREMENTS.md`
 - 仕様書: `pid-simulator-specification.md`
