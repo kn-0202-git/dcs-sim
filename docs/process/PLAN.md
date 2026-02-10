@@ -39,20 +39,36 @@
 - Step3-4 [✅ resolved]: プラント差し替えガイドライン文書化
 - Step3-5 [✅ resolved]: 整理・クリーンアップ
 
+### Step 4: バルブの独立オブジェクト化（r8）
+目的: バルブを Pipe.valveId から独立オブジェクトに分離し、実プラントのデータモデルに近づける
+完了条件: 全テストパス、既存機能の動作維持、ドキュメント更新済み
+ブランチ: feature/step4-valve-independence（完了後 main にマージ）
+対象issue:
+- Step4-1 [🟡 open]: 型定義 + データモデル移行（types.ts, sampleData.ts + テスト）
+- Step4-2 [🟡 open]: BFS更新（computeReachableNodes + テスト）【Phase 2 並列】
+- Step4-3 [🟡 open]: 配管判定更新（isPipeActive + テスト）【Phase 2 並列】
+- Step4-4 [🟡 open]: バリデータ更新（topologyValidator + テスト）【Phase 2 並列】
+- Step4-5 [🟡 open]: UI統合（PIDCanvas, PIDSimulator + コンポーネントテスト）
+
 ## 5. r-issue リスト（課題管理）
 運用ルールは `docs/process/DEVELOPMENT_PROCESS.md` を参照
 
 - r1 / issue開発ログの作成漏れ（Step1-1〜1-4） / 改善 / 高 / ✅ resolved
 - r2 / Step3 issue開発ログのテンプレート不準拠（Step3-1〜3-5） / 改善 / 高 / ✅ resolved
-- r3 / Claude Code許可設定の整備 / 改善 / 中 / 🔵 in_progress
+- r3 / Claude Code許可設定の整備 / 改善 / 中 / ✅ resolved
 - r4 / プラント差し替えガイドの構成改善（SVG作成ワークフロー + 非IT向けリライト） / 改善 / 中 / ✅ resolved
 - r5 / LLMがr-issueを認識・作成できない / 改善 / 高 / ✅ resolved
-- r6 / issue開発ログのテンプレート自動生成（Claude Code skill化） / 改善 / 中 / 🟡 open
+- r6 / issue開発ログのテンプレート自動生成（Claude Code skill化） / 改善 / 中 / ✅ resolved
 - r7 / 型名称の統一・ドキュメント改善・tankId 明示化 / 改善 / 高 / ✅ resolved
 - r8 / バルブの独立オブジェクト化検討 / 改善 / 中 / 🟡 open
 - r9 / GitHub Pages デプロイ / 機能追加 / 中 / ✅ resolved
-- r10 / LLMエントリポイントのテンプレート未展開・乖離 / 改善 / 中 / 🟡 open
+- r10 / LLMエントリポイントのテンプレート未展開・乖離 / 改善 / 中 / ✅ resolved
 - r11 / プロジェクトルートの不要ファイル整理 / 改善 / 中 / ✅ resolved
+- r12 / 流量表示（配管ごとの流量アニメーション） / 新要件 / 低 / 🟡 open
+- r13 / 操作手順記録/再生 / 新要件 / 低 / 🟡 open
+- r14 / 複数液種対応（色分け） / 新要件 / 低 / 🟡 open
+- r15 / アラーム機能 / 新要件 / 低 / 🟡 open
+- r16 / 設定保存/読込 / 新要件 / 低 / 🟡 open
 
 ## 6. issue開発ログ（参照）
 - 保存先: `docs/logs/issues/`

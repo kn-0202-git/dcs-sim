@@ -95,12 +95,17 @@ rm SETUP_GUIDE.md PLACEHOLDER_GUIDE.md
 
 ### ステップ5: LLMエントリーポイントをプロジェクトルートにコピー
 
+プロジェクトルートで実行してください（ステップ1で `cd` 済みの想定）:
+
 ```bash
-# LLMエントリーポイントをプロジェクトルートにコピー
-cp LLM_ENTRY_POINTS/CLAUDE.md ../CLAUDE.md
+# 使用するLLMのエントリーポイントをプロジェクトルートにコピー
+cp LLM_ENTRY_POINTS/CLAUDE.md ./CLAUDE.md
 # または、使用するLLMに応じて
-cp LLM_ENTRY_POINTS/CODEX.md ../CODEX.md
-cp LLM_ENTRY_POINTS/GEMINI.md ../GEMINI.md
+cp LLM_ENTRY_POINTS/CODEX.md ./CODEX.md
+cp LLM_ENTRY_POINTS/GEMINI.md ./GEMINI.md
+
+# コピーされたことを確認
+ls -la CLAUDE.md CODEX.md GEMINI.md 2>/dev/null
 
 # LLM_ENTRY_POINTSフォルダを削除（オプション）
 rm -rf LLM_ENTRY_POINTS/
