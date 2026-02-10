@@ -60,7 +60,7 @@ describe('validateTopology', () => {
 
   it('バルブID重複を検出', () => {
     const nodes = [makeNode('a'), makeNode('b'), makeNode('c')];
-    const pipes = [makePipe('p1', 'a', 'b', null), makePipe('p2', 'b', 'c', null)];
+    const pipes = [makePipe('p1', 'a', 'b'), makePipe('p2', 'b', 'c')];
     const valves = [makeValve(1, 'p1'), makeValve(1, 'p2')];
     const result = validateTopology(nodes, pipes, valves);
     expect(result.valid).toBe(false);
