@@ -44,11 +44,11 @@
 完了条件: 全テストパス、既存機能の動作維持、ドキュメント更新済み
 ブランチ: feature/step4-valve-independence（完了後 main にマージ）
 対象issue:
-- Step4-1 [🟡 open]: 型定義 + データモデル移行（types.ts, sampleData.ts + テスト）
-- Step4-2 [🟡 open]: BFS更新（computeReachableNodes + テスト）【Phase 2 並列】
-- Step4-3 [🟡 open]: 配管判定更新（isPipeActive + テスト）【Phase 2 並列】
-- Step4-4 [🟡 open]: バリデータ更新（topologyValidator + テスト）【Phase 2 並列】
-- Step4-5 [🟡 open]: UI統合（PIDCanvas, PIDSimulator + コンポーネントテスト）
+- Step4-1 [✅ resolved]: 型定義 + データモデル移行（types.ts, sampleData.ts + テスト）
+- Step4-2 [✅ resolved]: BFS更新（computeReachableNodes + テスト）【Phase 2 並列】
+- Step4-3 [✅ resolved]: 配管判定更新（isPipeActive + テスト）【Phase 2 並列】
+- Step4-4 [✅ resolved]: バリデータ更新（topologyValidator + テスト）【Phase 2 並列】
+- Step4-5 [✅ resolved]: UI統合（PIDCanvas, PIDSimulator + コンポーネントテスト）
 
 ## 5. r-issue リスト（課題管理）
 運用ルールは `docs/process/DEVELOPMENT_PROCESS.md` を参照
@@ -60,7 +60,7 @@
 - r5 / LLMがr-issueを認識・作成できない / 改善 / 高 / ✅ resolved
 - r6 / issue開発ログのテンプレート自動生成（Claude Code skill化） / 改善 / 中 / ✅ resolved
 - r7 / 型名称の統一・ドキュメント改善・tankId 明示化 / 改善 / 高 / ✅ resolved
-- r8 / バルブの独立オブジェクト化検討 / 改善 / 中 / 🟡 open
+- r8 / バルブの独立オブジェクト化検討 / 改善 / 中 / ✅ resolved
 - r9 / GitHub Pages デプロイ / 機能追加 / 中 / ✅ resolved
 - r10 / LLMエントリポイントのテンプレート未展開・乖離 / 改善 / 中 / ✅ resolved
 - r11 / プロジェクトルートの不要ファイル整理 / 改善 / 中 / ✅ resolved
@@ -69,6 +69,8 @@
 - r14 / 複数液種対応（色分け） / 新要件 / 低 / 🟡 open
 - r15 / アラーム機能 / 新要件 / 低 / 🟡 open
 - r16 / 設定保存/読込 / 新要件 / 低 / 🟡 open
+- r17 / Step4並列作業によるコンポーネントテスト14件失敗 / 不具合 / 中 / ✅ resolved
+- r18 / brew shellenv の毎回手動実行を不要にする / 改善 / 中 / ✅ resolved
 
 ## 6. issue開発ログ（参照）
 - 保存先: `docs/logs/issues/`

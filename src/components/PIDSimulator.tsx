@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import type { ValveState, TankFilledState } from '../types';
 import type { Phase, Step, Rule, PhaseWithSteps, Violation } from '../education/types';
-import { nodes, pipes, allValveIds, nodeMap, tankIdMap, initialValves, initialTankFilled } from '../data/sampleData';
+import { nodes, pipes, valves, allValveIds, nodeMap, tankIdMap, initialValves, initialTankFilled, pipeToValveMap } from '../data/sampleData';
 import { validateTopology } from '../data/topologyValidator';
 import { computeReachableNodes } from '../logic/computeReachableNodes';
 import { parseCSV, defaultPhasesCSV, defaultStepsCSV, defaultRulesCSV } from '../education/csvParser';
@@ -50,7 +50,7 @@ const s = {
 
 // dev モードでトポロジーの整合性を検証
 if (import.meta.env.DEV) {
-  const validation = validateTopology(nodes, pipes);
+  const validation = validateTopology(nodes, pipes, valves);
   if (!validation.valid) {
     console.error('Topology validation errors:', validation.errors);
   }
@@ -89,7 +89,7 @@ export function PIDSimulator() {
 
   // 到達判定
   const reachableNodes = useMemo(
-    () => computeReachableNodes(nodes, pipes, valves, tankFilled),
+    () => computeReachableNodes(nodes, pipes, valves, tankFilled, pipeToValveMap),
     [valves, tankFilled],
   );
 
@@ -240,7 +240,7 @@ export function PIDSimulator() {
         {/* P&ID図 */}
         <PIDCanvas
           nodes={nodes} pipes={pipes} valves={valves} tankFilled={tankFilled}
-          reachableNodes={reachableNodes} nodeMap={nodeMap}
+          reachableNodes={reachableNodes} nodeMap={nodeMap} pipeToValveMap={pipeToValveMap}
           onToggleValve={toggleValve} onToggleTank={toggleTank}
         />
       </div>

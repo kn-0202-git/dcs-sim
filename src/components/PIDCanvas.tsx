@@ -1,4 +1,4 @@
-import type { PIDNode, Pipe, ValveState, TankFilledState } from '../types';
+import type { PIDNode, Pipe, Valve, ValveState, TankFilledState } from '../types';
 import { COLORS, PIPE_INACTIVE_OPACITY } from '../constants/colors';
 import { isPipeActive } from '../logic/isPipeActive';
 
@@ -9,12 +9,13 @@ interface PIDCanvasProps {
   tankFilled: TankFilledState;
   reachableNodes: Set<string>;
   nodeMap: Record<string, PIDNode>;
+  pipeToValveMap: ReadonlyMap<string, Valve>;
   onToggleValve: (id: number) => void;
   onToggleTank: (id: string) => void;
 }
 
 export function PIDCanvas({
-  nodes, pipes, valves, tankFilled, reachableNodes, nodeMap,
+  nodes, pipes, valves, tankFilled, reachableNodes, nodeMap, pipeToValveMap,
   onToggleValve, onToggleTank,
 }: PIDCanvasProps) {
   const getPipePath = (pipe: Pipe) => {
@@ -44,7 +45,7 @@ export function PIDCanvas({
 
       {/* 配管 */}
       {pipes.map(pipe => {
-        const active = isPipeActive(pipe, valves, reachableNodes);
+        const active = isPipeActive(pipe, valves, reachableNodes, pipeToValveMap);
         return (
           <path key={pipe.id} d={getPipePath(pipe)}
             stroke={active ? COLORS.pipe.active : COLORS.pipe.inactive}
@@ -55,20 +56,23 @@ export function PIDCanvas({
       })}
 
       {/* バルブ */}
-      {pipes.filter(p => p.valveId !== null).map(pipe => {
-        const pos = getValvePosition(pipe);
-        const isOpen = valves[pipe.valveId!];
-        return (
-          <g key={`v-${pipe.valveId}`} onClick={() => onToggleValve(pipe.valveId!)} style={{ cursor: 'pointer' }}>
-            <circle cx={pos.x} cy={pos.y} r={14}
-              fill={isOpen ? COLORS.valve.open : COLORS.valve.closed}
-              stroke="#fff" strokeWidth={2} />
-            <text x={pos.x} y={pos.y + 5} textAnchor="middle" fontSize="11" fill="#fff" fontWeight="bold">
-              {pipe.valveId}
-            </text>
-          </g>
-        );
-      })}
+      {pipes
+        .map(pipe => ({ pipe, valve: pipeToValveMap.get(pipe.id) }))
+        .filter(({ valve }) => valve !== undefined)
+        .map(({ pipe, valve }) => {
+          const pos = getValvePosition(pipe);
+          const isOpen = valves[valve!.id];
+          return (
+            <g key={`v-${valve!.id}`} onClick={() => onToggleValve(valve!.id)} style={{ cursor: 'pointer' }}>
+              <circle cx={pos.x} cy={pos.y} r={14}
+                fill={isOpen ? COLORS.valve.open : COLORS.valve.closed}
+                stroke="#fff" strokeWidth={2} />
+              <text x={pos.x} y={pos.y + 5} textAnchor="middle" fontSize="11" fill="#fff" fontWeight="bold">
+                {valve!.id}
+              </text>
+            </g>
+          );
+        })}
 
       {/* タンク・ソース・アウトレット */}
       {nodes.filter(n => n.type).map(node => {

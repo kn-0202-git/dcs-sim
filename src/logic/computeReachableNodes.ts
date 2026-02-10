@@ -1,10 +1,11 @@
-import type { PIDNode, Pipe, ValveState, TankFilledState } from '../types';
+import type { PIDNode, Pipe, Valve, ValveState, TankFilledState } from '../types';
 
 export function computeReachableNodes(
   nodes: PIDNode[],
   pipes: Pipe[],
-  valves: ValveState,
+  valveState: ValveState,
   tankFilled: TankFilledState,
+  pipeToValveMap: ReadonlyMap<string, Valve>,
 ): Set<string> {
   const reachable = new Set<string>();
   const queue: string[] = [];
@@ -22,7 +23,8 @@ export function computeReachableNodes(
   while (queue.length > 0) {
     const current = queue.shift()!;
     for (const pipe of pipes) {
-      const canPass = pipe.valveId === null || valves[pipe.valveId] === true;
+      const valve = pipeToValveMap.get(pipe.id);
+      const canPass = !valve || valveState[valve.id] === true;
       if (!canPass) continue;
 
       let next: string | null = null;
