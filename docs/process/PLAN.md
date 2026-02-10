@@ -52,6 +52,7 @@
 - r8 / バルブの独立オブジェクト化検討 / 改善 / 中 / 🟡 open
 - r9 / GitHub Pages デプロイ / 機能追加 / 中 / ✅ resolved
 - r10 / LLMエントリポイントのテンプレート未展開・乖離 / 改善 / 中 / 🟡 open
+- r11 / プロジェクトルートの不要ファイル整理 / 改善 / 中 / ✅ resolved
 
 ## 6. issue開発ログ（参照）
 - 保存先: `docs/logs/issues/`
