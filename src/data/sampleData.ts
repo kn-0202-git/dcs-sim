@@ -1,4 +1,5 @@
-import type { PIDNode, Pipe, Valve, ValveState, TankFilledState } from '../types';
+import type { PIDNode, Pipe, Valve } from '../types';
+import { deriveHelpers } from './deriveHelpers';
 
 export const nodes: PIDNode[] = [
   { id: 'input', x: 50, y: 200, label: '液体A\n(供給)', type: 'input' },
@@ -39,39 +40,13 @@ export const valves: Valve[] = [
 
 // --- 以下すべて nodes/pipes/valves から自動導出 ---
 
-export const valveMap: ReadonlyMap<number, Valve> = new Map(
-  valves.map(v => [v.id, v])
-);
+const derived = deriveHelpers(nodes, valves);
 
-export const pipeToValveMap: ReadonlyMap<string, Valve> = new Map(
-  valves.map(v => [v.pipeId, v])
-);
-
-export const allValveIds: number[] = valves.map(v => v.id).sort((a, b) => a - b);
-
-export const allTankIds: string[] = nodes
-  .filter(n => n.type === 'tank')
-  .map(n => n.id);
-
-export const nodeMap: Record<string, PIDNode> = Object.fromEntries(
-  nodes.map(n => [n.id, n])
-);
-
-// CSV条件式の短縮名（T1, T2, ...）→ ノードID のマッピング
-// タンクの nodes 配列出現順で番号付け
-export const tankIdMap: Record<string, string> = Object.fromEntries(
-  nodes
-    .filter(n => n.type === 'tank' && n.tankId != null)
-    .map(n => [`T${n.tankId}`, n.id])
-);
-
-export const initialValves: ValveState = Object.fromEntries(
-  allValveIds.map(id => [id, false])
-);
-
-// source は液あり、tank は空で初期化
-export const initialTankFilled: TankFilledState = Object.fromEntries(
-  nodes
-    .filter(n => n.type === 'input' || n.type === 'tank')
-    .map(n => [n.id, n.type === 'input'])
-);
+export const valveMap = derived.valveMap;
+export const pipeToValveMap = derived.pipeToValveMap;
+export const allValveIds = derived.allValveIds;
+export const allTankIds = derived.allTankIds;
+export const nodeMap = derived.nodeMap;
+export const tankIdMap = derived.tankIdMap;
+export const initialValves = derived.initialValves;
+export const initialTankFilled = derived.initialTankFilled;
