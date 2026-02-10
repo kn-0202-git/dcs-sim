@@ -58,7 +58,7 @@
 - Step5-1 [✅ resolved]: SVGパーサー + バリデーター（型定義・解析・検証）【Phase 1 並列】
 - Step5-2 [✅ resolved]: deriveHelpers 抽出リファクタ【Phase 1 並列】
 - Step5-3 [✅ resolved]: SVGCanvas コンポーネント【Phase 2】
-- Step5-4 [🟡 open]: PIDSimulator統合（SVGインポートUI + データソース切替）【Phase 3】
+- Step5-4 [✅ resolved]: PIDSimulator統合（SVGインポートUI + データソース切替）【Phase 3】
 - Step5-5 [🟡 open]: ドキュメント更新【Phase 4】
 
 ## 5. r-issue リスト（課題管理）

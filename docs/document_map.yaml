@@ -76,6 +76,7 @@ folders:
       - Step5-1.md
       - Step5-2.md
       - Step5-3.md
+      - Step5-4.md
   - id: r_issue_logs
     path: docs/logs/r_issues
     meta: docs/logs/r_issues/meta.yaml
