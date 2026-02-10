@@ -3,7 +3,7 @@ import { isPipeActive } from '../isPipeActive';
 import type { Pipe, Valve, ValveState } from '../../types';
 
 const makePipe = (id: string, from: string, to: string): Pipe => ({
-  id, from, to, valveId: null,
+  id, from, to,
 });
 
 const makeValveMap = (...entries: Valve[]): ReadonlyMap<string, Valve> =>

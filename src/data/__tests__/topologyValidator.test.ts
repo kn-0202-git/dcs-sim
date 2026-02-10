@@ -6,8 +6,8 @@ const makeNode = (id: string, type?: PIDNode['type']): PIDNode => ({
   id, x: 0, y: 0, type,
 });
 
-const makePipe = (id: string, from: string, to: string, valveId: number | null): Pipe => ({
-  id, from, to, valveId,
+const makePipe = (id: string, from: string, to: string): Pipe => ({
+  id, from, to,
 });
 
 const makeValve = (id: number, pipeId: string): Valve => ({ id, pipeId });
@@ -15,7 +15,7 @@ const makeValve = (id: number, pipeId: string): Valve => ({ id, pipeId });
 describe('validateTopology', () => {
   it('正常なトポロジーはvalid', () => {
     const nodes = [makeNode('a', 'input'), makeNode('b', 'tank')];
-    const pipes = [makePipe('p1', 'a', 'b', 1)];
+    const pipes = [makePipe('p1', 'a', 'b')];
     const valves = [makeValve(1, 'p1')];
     const result = validateTopology(nodes, pipes, valves);
     expect(result.valid).toBe(true);
@@ -29,7 +29,7 @@ describe('validateTopology', () => {
 
   it('パイプのfromが存在しないノードを参照', () => {
     const nodes = [makeNode('a')];
-    const pipes = [makePipe('p1', 'missing', 'a', null)];
+    const pipes = [makePipe('p1', 'missing', 'a')];
     const result = validateTopology(nodes, pipes, []);
     expect(result.valid).toBe(false);
     expect(result.errors).toContainEqual(expect.stringContaining('from "missing"'));
@@ -37,7 +37,7 @@ describe('validateTopology', () => {
 
   it('パイプのtoが存在しないノードを参照', () => {
     const nodes = [makeNode('a')];
-    const pipes = [makePipe('p1', 'a', 'missing', null)];
+    const pipes = [makePipe('p1', 'a', 'missing')];
     const result = validateTopology(nodes, pipes, []);
     expect(result.valid).toBe(false);
     expect(result.errors).toContainEqual(expect.stringContaining('to "missing"'));
@@ -52,7 +52,7 @@ describe('validateTopology', () => {
 
   it('パイプID重複を検出', () => {
     const nodes = [makeNode('a'), makeNode('b')];
-    const pipes = [makePipe('p1', 'a', 'b', null), makePipe('p1', 'a', 'b', null)];
+    const pipes = [makePipe('p1', 'a', 'b'), makePipe('p1', 'a', 'b')];
     const result = validateTopology(nodes, pipes, []);
     expect(result.valid).toBe(false);
     expect(result.errors).toContainEqual(expect.stringContaining('パイプID重複'));
@@ -69,7 +69,7 @@ describe('validateTopology', () => {
 
   it('バルブのpipeIdが存在しないパイプを参照', () => {
     const nodes = [makeNode('a'), makeNode('b')];
-    const pipes = [makePipe('p1', 'a', 'b', null)];
+    const pipes = [makePipe('p1', 'a', 'b')];
     const valves = [makeValve(1, 'missing')];
     const result = validateTopology(nodes, pipes, valves);
     expect(result.valid).toBe(false);
@@ -78,7 +78,7 @@ describe('validateTopology', () => {
 
   it('複数エラーを同時に検出', () => {
     const nodes = [makeNode('a'), makeNode('a')]; // ノードID重複
-    const pipes = [makePipe('p1', 'a', 'missing', null)]; // 存在しないノード
+    const pipes = [makePipe('p1', 'a', 'missing')]; // 存在しないノード
     const result = validateTopology(nodes, pipes, []);
     expect(result.valid).toBe(false);
     expect(result.errors.length).toBeGreaterThanOrEqual(2);

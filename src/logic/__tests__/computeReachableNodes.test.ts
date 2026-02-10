@@ -7,17 +7,9 @@ const makeNode = (id: string, type?: PIDNode['type']): PIDNode => ({
   id, x: 0, y: 0, type,
 });
 
-const makePipe = (id: string, from: string, to: string, valveId: number | null): Pipe => ({
-  id, from, to, valveId,
+const makePipe = (id: string, from: string, to: string): Pipe => ({
+  id, from, to,
 });
-
-// pipeId→Valve マップを構築（テスト用）
-const buildPipeToValveMap = (pipes: Pipe[]): ReadonlyMap<string, Valve> =>
-  new Map(
-    pipes
-      .filter(p => p.valveId !== null)
-      .map(p => [p.id, { id: p.valveId!, pipeId: p.id }])
-  );
 
 const emptyPipeToValveMap = new Map<string, Valve>();
 
@@ -38,18 +30,27 @@ const sampleNodes: PIDNode[] = [
 ];
 
 const samplePipes: Pipe[] = [
-  makePipe('p1', 'input', 'n1', null),
-  makePipe('p2', 'n1', 'n2', 1),
-  makePipe('p3', 'n2', 'n3', 2),
-  makePipe('p4', 'n3', 'tank-T1', 3),
-  makePipe('p5', 'n2', 'n4', 4),
-  makePipe('p6', 'n4', 'tank-T2', 5),
-  makePipe('p7', 'tank-T1', 'n5', 6),
-  makePipe('p8', 'tank-T2', 'n5', 7),
-  makePipe('p9', 'n5', 'outlet', 8),
+  makePipe('p1', 'input', 'n1'),
+  makePipe('p2', 'n1', 'n2'),
+  makePipe('p3', 'n2', 'n3'),
+  makePipe('p4', 'n3', 'tank-T1'),
+  makePipe('p5', 'n2', 'n4'),
+  makePipe('p6', 'n4', 'tank-T2'),
+  makePipe('p7', 'tank-T1', 'n5'),
+  makePipe('p8', 'tank-T2', 'n5'),
+  makePipe('p9', 'n5', 'outlet'),
 ];
 
-const samplePipeToValveMap = buildPipeToValveMap(samplePipes);
+const samplePipeToValveMap = new Map<string, Valve>([
+  ['p2', { id: 1, pipeId: 'p2' }],
+  ['p3', { id: 2, pipeId: 'p3' }],
+  ['p4', { id: 3, pipeId: 'p4' }],
+  ['p5', { id: 4, pipeId: 'p5' }],
+  ['p6', { id: 5, pipeId: 'p6' }],
+  ['p7', { id: 6, pipeId: 'p7' }],
+  ['p8', { id: 7, pipeId: 'p8' }],
+  ['p9', { id: 8, pipeId: 'p9' }],
+]);
 
 const allClosed: ValveState = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false, 8: false };
 const allOpen: ValveState = { 1: true, 2: true, 3: true, 4: true, 5: true, 6: true, 7: true, 8: true };
@@ -166,7 +167,7 @@ describe('computeReachableNodes', () => {
 
     it('2ノード・1パイプ（バルブなし）', () => {
       const nodes = [makeNode('a', 'input'), makeNode('b')];
-      const pipes = [makePipe('p', 'a', 'b', null)];
+      const pipes = [makePipe('p', 'a', 'b')];
       const tankFilled: TankFilledState = { a: true };
       const result = computeReachableNodes(nodes, pipes, {}, tankFilled, emptyPipeToValveMap);
       expect(result).toContain('a');
@@ -179,8 +180,8 @@ describe('computeReachableNodes', () => {
       // A → B → C の直線。Cにタンク(満)を置き、Cから逆方向に辿れるか確認
       const nodes = [makeNode('a'), makeNode('b'), makeNode('c', 'tank')];
       const pipes = [
-        makePipe('p1', 'a', 'b', null),
-        makePipe('p2', 'b', 'c', null),
+        makePipe('p1', 'a', 'b'),
+        makePipe('p2', 'b', 'c'),
       ];
       const tankFilled: TankFilledState = { c: true };
       const result = computeReachableNodes(nodes, pipes, {}, tankFilled, emptyPipeToValveMap);
