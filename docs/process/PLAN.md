@@ -44,7 +44,7 @@
 完了条件: 全テストパス、既存機能の動作維持、ドキュメント更新済み
 ブランチ: feature/step4-valve-independence（完了後 main にマージ）
 対象issue:
-- Step4-1 [🟡 open]: 型定義 + データモデル移行（types.ts, sampleData.ts + テスト）
+- Step4-1 [✅ resolved]: 型定義 + データモデル移行（types.ts, sampleData.ts + テスト）
 - Step4-2 [🟡 open]: BFS更新（computeReachableNodes + テスト）【Phase 2 並列】
 - Step4-3 [🟡 open]: 配管判定更新（isPipeActive + テスト）【Phase 2 並列】
 - Step4-4 [🟡 open]: バリデータ更新（topologyValidator + テスト）【Phase 2 並列】

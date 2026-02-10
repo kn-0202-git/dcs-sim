@@ -7,10 +7,16 @@ export interface PIDNode {
   tankId?: number;
 }
 
+export interface Valve {
+  id: number;
+  pipeId: string;
+}
+
 export interface Pipe {
   id: string;
   from: string;
   to: string;
+  /** @deprecated Valve info is moving to Valve[]. Will be removed in Step 4-5. */
   valveId: number | null;
 }
 

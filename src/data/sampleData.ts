@@ -1,4 +1,4 @@
-import type { PIDNode, Pipe, ValveState, TankFilledState } from '../types';
+import type { PIDNode, Pipe, Valve, ValveState, TankFilledState } from '../types';
 
 export const nodes: PIDNode[] = [
   { id: 'input', x: 50, y: 200, label: '液体A\n(供給)', type: 'input' },
@@ -24,11 +24,30 @@ export const pipes: Pipe[] = [
   { id: 'p9', from: 'n5', to: 'outlet', valveId: 8 },
 ];
 
-// --- 以下すべて nodes/pipes から自動導出 ---
+// --- バルブ独立定義 ---
 
-export const allValveIds: number[] = Array.from(
-  new Set(pipes.map(p => p.valveId).filter((id): id is number => id !== null))
-).sort((a, b) => a - b);
+export const valves: Valve[] = [
+  { id: 1, pipeId: 'p2' },
+  { id: 2, pipeId: 'p3' },
+  { id: 3, pipeId: 'p4' },
+  { id: 4, pipeId: 'p5' },
+  { id: 5, pipeId: 'p6' },
+  { id: 6, pipeId: 'p7' },
+  { id: 7, pipeId: 'p8' },
+  { id: 8, pipeId: 'p9' },
+];
+
+// --- 以下すべて nodes/pipes/valves から自動導出 ---
+
+export const valveMap: ReadonlyMap<number, Valve> = new Map(
+  valves.map(v => [v.id, v])
+);
+
+export const pipeToValveMap: ReadonlyMap<string, Valve> = new Map(
+  valves.map(v => [v.pipeId, v])
+);
+
+export const allValveIds: number[] = valves.map(v => v.id).sort((a, b) => a - b);
 
 export const allTankIds: string[] = nodes
   .filter(n => n.type === 'tank')
