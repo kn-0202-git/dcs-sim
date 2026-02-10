@@ -16,8 +16,6 @@ export interface Pipe {
   id: string;
   from: string;
   to: string;
-  /** @deprecated Valve info is moving to Valve[]. Will be removed in Step 4-5. */
-  valveId: number | null;
 }
 
 export type ValveState = Record<number, boolean>;

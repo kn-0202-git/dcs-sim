@@ -56,20 +56,23 @@ export function PIDCanvas({
       })}
 
       {/* バルブ */}
-      {pipes.filter(p => p.valveId !== null).map(pipe => {
-        const pos = getValvePosition(pipe);
-        const isOpen = valves[pipe.valveId!];
-        return (
-          <g key={`v-${pipe.valveId}`} onClick={() => onToggleValve(pipe.valveId!)} style={{ cursor: 'pointer' }}>
-            <circle cx={pos.x} cy={pos.y} r={14}
-              fill={isOpen ? COLORS.valve.open : COLORS.valve.closed}
-              stroke="#fff" strokeWidth={2} />
-            <text x={pos.x} y={pos.y + 5} textAnchor="middle" fontSize="11" fill="#fff" fontWeight="bold">
-              {pipe.valveId}
-            </text>
-          </g>
-        );
-      })}
+      {pipes
+        .map(pipe => ({ pipe, valve: pipeToValveMap.get(pipe.id) }))
+        .filter(({ valve }) => valve !== undefined)
+        .map(({ pipe, valve }) => {
+          const pos = getValvePosition(pipe);
+          const isOpen = valves[valve!.id];
+          return (
+            <g key={`v-${valve!.id}`} onClick={() => onToggleValve(valve!.id)} style={{ cursor: 'pointer' }}>
+              <circle cx={pos.x} cy={pos.y} r={14}
+                fill={isOpen ? COLORS.valve.open : COLORS.valve.closed}
+                stroke="#fff" strokeWidth={2} />
+              <text x={pos.x} y={pos.y + 5} textAnchor="middle" fontSize="11" fill="#fff" fontWeight="bold">
+                {valve!.id}
+              </text>
+            </g>
+          );
+        })}
 
       {/* タンク・ソース・アウトレット */}
       {nodes.filter(n => n.type).map(node => {

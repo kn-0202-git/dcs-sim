@@ -13,15 +13,15 @@ export const nodes: PIDNode[] = [
 ];
 
 export const pipes: Pipe[] = [
-  { id: 'p1', from: 'input', to: 'n1', valveId: null },
-  { id: 'p2', from: 'n1', to: 'n2', valveId: 1 },
-  { id: 'p3', from: 'n2', to: 'n3', valveId: 2 },
-  { id: 'p4', from: 'n3', to: 'tank-T1', valveId: 3 },
-  { id: 'p5', from: 'n2', to: 'n4', valveId: 4 },
-  { id: 'p6', from: 'n4', to: 'tank-T2', valveId: 5 },
-  { id: 'p7', from: 'tank-T1', to: 'n5', valveId: 6 },
-  { id: 'p8', from: 'tank-T2', to: 'n5', valveId: 7 },
-  { id: 'p9', from: 'n5', to: 'outlet', valveId: 8 },
+  { id: 'p1', from: 'input', to: 'n1' },
+  { id: 'p2', from: 'n1', to: 'n2' },
+  { id: 'p3', from: 'n2', to: 'n3' },
+  { id: 'p4', from: 'n3', to: 'tank-T1' },
+  { id: 'p5', from: 'n2', to: 'n4' },
+  { id: 'p6', from: 'n4', to: 'tank-T2' },
+  { id: 'p7', from: 'tank-T1', to: 'n5' },
+  { id: 'p8', from: 'tank-T2', to: 'n5' },
+  { id: 'p9', from: 'n5', to: 'outlet' },
 ];
 
 // --- バルブ独立定義 ---

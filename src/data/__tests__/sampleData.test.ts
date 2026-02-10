@@ -33,28 +33,6 @@ describe('sampleData', () => {
     });
   });
 
-  describe('valves[] と pipes[].valveId の整合性（移行期間）', () => {
-    it('pipes の valveId と valves の pipeId が一致する', () => {
-      for (const pipe of pipes) {
-        const valve = valves.find(v => v.pipeId === pipe.id);
-        if (pipe.valveId !== null) {
-          expect(valve).toBeDefined();
-          expect(valve!.id).toBe(pipe.valveId);
-        } else {
-          expect(valve).toBeUndefined();
-        }
-      }
-    });
-
-    it('valves の全エントリが pipes 側にも反映されている', () => {
-      for (const valve of valves) {
-        const pipe = pipes.find(p => p.id === valve.pipeId);
-        expect(pipe).toBeDefined();
-        expect(pipe!.valveId).toBe(valve.id);
-      }
-    });
-  });
-
   describe('導出ヘルパー', () => {
     it('allValveIds が valves[] から正しく導出される', () => {
       expect(allValveIds).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
