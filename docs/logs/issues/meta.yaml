@@ -11,4 +11,23 @@ responsibility:
     - トラブルシューティング記録
   excludes:
     - 要件定義
-documents: []
+documents:
+  - Step1-1.md
+  - Step1-2.md
+  - Step1-3.md
+  - Step1-4.md
+  - Step2-1.md
+  - Step2-2.md
+  - Step2-3.md
+  - Step3-1.md
+  - Step3-2.md
+  - Step3-3.md
+  - Step3-4.md
+  - Step3-5.md
+  - Step4-1.md
+  - Step4-2.md
+  - Step4-3.md
+  - Step4-4.md
+  - Step4-5.md
+  - Step5-1.md
+  - Step5-2.md
