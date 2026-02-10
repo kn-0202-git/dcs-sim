@@ -6,6 +6,7 @@
 - DCS画面のような操作感でバルブを開閉
 - BFSアルゴリズムによるリアルタイム液体到達判定
 - SVGベースのP&ID図描画
+- SVGファイルをアプリ上から読み込み（draw.io対応）
 - 教育・訓練モード（フェーズ/ステップ/安全ルール）
 
 ## 技術スタック
@@ -32,3 +33,4 @@ npm run build     # プロダクションビルド
 - 開発計画: `docs/process/PLAN.md`
 - アーキテクチャ: `docs/architecture/ARCHITECTURE.md`
 - 開発プロセス: `docs/process/DEVELOPMENT_PROCESS.md`
+- プラント差し替えガイド: `docs/guides/PLANT_CUSTOMIZATION.md`

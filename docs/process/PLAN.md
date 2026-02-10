@@ -59,7 +59,7 @@
 - Step5-2 [✅ resolved]: deriveHelpers 抽出リファクタ【Phase 1 並列】
 - Step5-3 [✅ resolved]: SVGCanvas コンポーネント【Phase 2】
 - Step5-4 [✅ resolved]: PIDSimulator統合（SVGインポートUI + データソース切替）【Phase 3】
-- Step5-5 [🟡 open]: ドキュメント更新【Phase 4】
+- Step5-5 [✅ resolved]: ドキュメント更新【Phase 4】
 
 ## 5. r-issue リスト（課題管理）
 運用ルールは `docs/process/DEVELOPMENT_PROCESS.md` を参照
@@ -84,6 +84,7 @@
 - r18 / brew shellenv の毎回手動実行を不要にする / 改善 / 中 / ✅ resolved
 - r19 / SVGファイルインポート機能（アプリ上からSVG読み込み→P&ID画面表示） / 新要件 / 中 / 🔵 in_progress
 - r20 / Step5事前コードレビュー: SVGインポートのセキュリティ・運用リスク / 改善 / 高 / 🟡 open
+- r21 / 専門家ロスター + ファシリテーター運用による開発プロセス標準化 / 改善 / 中 / 🟡 open
 
 ## 6. issue開発ログ（参照）
 - 保存先: `docs/logs/issues/`

@@ -72,7 +72,7 @@ Step 3: Reactに組み込む       ← エンジニア
         ↓
 
 Step 4: ロジック接続           ← エンジニア
-  バルブと配管の対応表を作り、CSV訓練シナリオを設定する
+  SVGにdata属性を付け、CSV訓練シナリオを設定する
 ```
 
 ### システムの3層構造
@@ -276,8 +276,11 @@ draw.io のレイヤー機能を使うと、グループ管理がさらに楽に
 SVG を提出する前に確認してください:
 
 - [ ] 全ての配管にIDが付いている（`pipe-1`, `pipe-2`, ...）
+- [ ] 全ての配管に `data-from` / `data-to` が付いている
 - [ ] 全てのバルブにIDが付いている（`valve-1`, `valve-2`, ...）
+- [ ] 全てのバルブに `data-pipe` が付いている
 - [ ] 全てのタンク・供給元・出口にIDが付いている
+- [ ] 全てのタンクに `data-tank-id` が付いている
 - [ ] IDに重複がない
 - [ ] 配管がバルブで区切った区間ごとに分かれている
 - [ ] ラベル（表示名）が付いている（タンク名、バルブ番号）
@@ -290,75 +293,49 @@ SVG を提出する前に確認してください:
 
 > このセクションはエンジニア向けです。
 
-### 6.1 SVGインポート方法（概要）
+### 6.1 SVGインポート方法（UI）
 
-事務スタッフから受け取った SVG ファイルを React コンポーネントとして読み込みます。
+アプリ上部の **「SVG読み込み」** ボタンからファイルを選択します。  
+読み込み成功後、**「SVG」** ボタンで表示を切り替えます。
 
-```typescript
-// SVG を React コンポーネントとしてインポート
-import PlantSVG from './assets/plant-sample.svg?react';
+読み込み時のエラー/警告は左パネルに表示されます（例: 必須属性の不足、ID重複など）。
 
-// または、SVG の中身を文字列として読み込んで dangerouslySetInnerHTML で描画
-import plantSvgRaw from './assets/plant-sample.svg?raw';
+### 6.2 SVGに付与する data 属性（必須）
+
+SVG内の要素に **data属性** を付けて、配管・バルブ・タンクの関係を定義します。
+
+| 要素 | 必須属性 | 役割 |
+|------|---------|------|
+| 配管 | `data-from`, `data-to` | 配管の両端ノードIDを定義（BFSの経路計算に使用） |
+| バルブ | `data-pipe` | 制御対象の配管IDを指定 |
+| タンク | `data-tank-id` | CSV条件式の `T{n}` と対応する番号 |
+
+```xml
+<path id="pipe-1" data-from="input" data-to="connection-1" d="..." />
+<circle id="valve-1" data-pipe="pipe-1" r="5" />
+<rect id="tank-T1" data-tank-id="1" width="..." height="..." />
 ```
 
-動的スタイル適用の考え方:
-- SVG 内の各要素を `id` で特定し、状態に応じて `fill` や `stroke` を変更する
-- 例: `document.getElementById('pipe-1')` で要素を取得し、通液中なら `stroke="#22d3ee"` に変更
+#### draw.ioでdata属性を付ける方法
 
-### 6.2 プロパティの利用箇所マップ
+1. 要素を選択
+2. 右クリック → **「データを編集」**（ショートカット: `Ctrl+M` / macは `Cmd+M`）
+3. `data-from`, `data-to`, `data-pipe`, `data-tank-id` をキー/値で追加
 
-SVG/TypeScript で定義する各プロパティが、アプリの UI でどこに使われるかの対応表です。
+### 6.3 ノードIDの命名ルール（input/outlet/connection）
 
-#### ノード（機器）のプロパティ
+`data-from` / `data-to` で参照する **ノードID** は、以下の命名規則に従います。
 
-| プロパティ | 型 | 対象type | UIでの利用 |
-|-----------|-----|---------|-----------|
-| `id` | string | 全て | SVG要素の特定、動的スタイル適用 |
-| `x`, `y` | number | 全て | SVG上の配置座標（TypeScript配列方式のみ。SVG方式ではdraw.io上の配置で決まる） |
-| `label` | string | input, tank, outlet | SVG上のテキスト表示（設備名、タンク名） |
-| `type` | string | input, tank, outlet | [描画ルール表（§3）](#3-画面に何が表示されるか描画ルール表)の形・サイズ・色・操作可否を決定。接続点は省略 |
-| `tankId` | number | tank のみ | CSV条件式の `T{n}` と対応（例: `tankId: 1` → CSV で `T1=FILLED`） |
+- 供給元: `input`, `input-1`, `input-2` ...
+- 出口: `outlet`, `outlet-1`, `outlet-2` ...
+- 接続点: `connection-1`, `connection-2` ...
 
-#### 配管のプロパティ
-
-| プロパティ | 型 | UIでの利用 |
-|-----------|-----|-----------|
-| `id` | string | SVG要素の特定、動的スタイル適用 |
-| `from`, `to` | string | 配管の両端ノードIDを定義。液体到達判定（BFS）の経路計算に使用 |
-| `valveId` | number \| null | バルブ円内の番号表示 + CSV条件式の `V{n}` と対応（例: `valveId: 3` → CSV で `V3=OPEN`）。`null` はバルブなし |
-
-#### 型別プロパティマトリクス
-
-| プロパティ | input | tank | outlet | 接続点 (type省略) |
-|-----------|-------|------|--------|-----------------|
-| `id` | 必須 | 必須 | 必須 | 必須 |
-| `x`, `y` | 必須 | 必須 | 必須 | 必須 |
-| `label` | 推奨 | 推奨 | 推奨 | 不要 |
-| `type` | `'input'` | `'tank'` | `'outlet'` | 省略 |
-| `tankId` | — | 必須 | — | — |
-
-### 6.3 バルブ⇔配管の対応表（マッピング）
-
-SVG の要素 ID と、ロジック上のバルブ/配管の対応を定義するマッピングテーブルが必要です。
-
-```typescript
-// バルブIDと、そのバルブが制御する配管の対応
-const valvePipeMap = {
-  'valve-1': { controls: ['pipe-1', 'pipe-2'], from: 'input', to: 'connection-1' },
-  'valve-2': { controls: ['pipe-3'], from: 'connection-1', to: 'tank-T1' },
-  // ...
-};
-```
-
-この対応表により:
-- バルブをクリックすると、対応する配管の色が変わる
-- 液体の到達判定（BFS）で経路を計算できる
+`input` が無いと到達判定が始まらないため、少なくとも1つは必須です。
 
 ### 6.4 条件式・CSVルールとの連携
 
-CSV 条件式の `V1`, `V2` は、マッピングテーブル上のバルブ番号に対応します。
-`T1`, `T2` は、タンクの出現順（マッピングテーブルでの定義順）に対応します。
+- `V1`, `V2` は **バルブ要素のID末尾番号**（例: `valve-2` → `V2`）に対応
+- `T1`, `T2` は **`data-tank-id` の番号**（例: `data-tank-id="2"` → `T2`）に対応
 
 詳細は [§8 CSVルールの設定](#8-csvルールの設定) を参照。
 
