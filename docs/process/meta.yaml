@@ -23,3 +23,6 @@ documents:
   - id: llm_guide
     title: LLM運用ガイド
     path: docs/process/LLM_GUIDE.md
+  - id: expert_panel
+    title: 専門家パネル運用
+    path: docs/process/EXPERT_PANEL.md

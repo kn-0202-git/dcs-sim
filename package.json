@@ -9,7 +9,11 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "process:check": "node scripts/process/process-check.mjs",
+    "process:new-issue": "node scripts/process/new-issue.mjs",
+    "process:new-r-issue": "node scripts/process/new-r-issue.mjs",
+    "process:install-hooks": "node scripts/process/install-hooks.mjs"
   },
   "dependencies": {
     "react": "^19.2.0",

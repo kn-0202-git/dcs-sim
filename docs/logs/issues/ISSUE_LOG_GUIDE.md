@@ -2,6 +2,9 @@
 
 このガイドでは、issue開発ログ（`StepX-Y.md`）の書き方を説明します。
 
+> 最新の必須項目は `docs/logs/issues/ISSUE_LOG_TEMPLATE.md` を正本とする。
+> ガイドの例と差分がある場合はテンプレート側を優先する。
+
 ## 目的
 
 issueログの目的は：

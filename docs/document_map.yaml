@@ -30,6 +30,11 @@ folders:
         path: docs/process/LLM_GUIDE.md
         responsibility: 複数LLM運用の共通ルール
         status: 有効
+      - id: expert_panel
+        title: 専門家パネル運用
+        path: docs/process/EXPERT_PANEL.md
+        responsibility: ファシリテーター主導の専門家招集ルール
+        status: 有効
   - id: architecture
     path: docs/architecture
     meta: docs/architecture/meta.yaml
