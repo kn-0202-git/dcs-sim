@@ -45,9 +45,9 @@
 ブランチ: feature/step4-valve-independence（完了後 main にマージ）
 対象issue:
 - Step4-1 [✅ resolved]: 型定義 + データモデル移行（types.ts, sampleData.ts + テスト）
-- Step4-2 [🟡 open]: BFS更新（computeReachableNodes + テスト）【Phase 2 並列】
-- Step4-3 [🟡 open]: 配管判定更新（isPipeActive + テスト）【Phase 2 並列】
-- Step4-4 [🟡 open]: バリデータ更新（topologyValidator + テスト）【Phase 2 並列】
+- Step4-2 [✅ resolved]: BFS更新（computeReachableNodes + テスト）【Phase 2 並列】
+- Step4-3 [✅ resolved]: 配管判定更新（isPipeActive + テスト）【Phase 2 並列】
+- Step4-4 [✅ resolved]: バリデータ更新（topologyValidator + テスト）【Phase 2 並列】
 - Step4-5 [🟡 open]: UI統合（PIDCanvas, PIDSimulator + コンポーネントテスト）
 
 ## 5. r-issue リスト（課題管理）
@@ -69,6 +69,7 @@
 - r14 / 複数液種対応（色分け） / 新要件 / 低 / 🟡 open
 - r15 / アラーム機能 / 新要件 / 低 / 🟡 open
 - r16 / 設定保存/読込 / 新要件 / 低 / 🟡 open
+- r17 / Step4並列作業によるコンポーネントテスト14件失敗 / 不具合 / 中 / 🟡 open
 
 ## 6. issue開発ログ（参照）
 - 保存先: `docs/logs/issues/`

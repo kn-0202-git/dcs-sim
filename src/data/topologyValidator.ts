@@ -1,11 +1,11 @@
-import type { PIDNode, Pipe } from '../types';
+import type { PIDNode, Pipe, Valve } from '../types';
 
 export interface ValidationResult {
   valid: boolean;
   errors: string[];
 }
 
-export function validateTopology(nodes: PIDNode[], pipes: Pipe[]): ValidationResult {
+export function validateTopology(nodes: PIDNode[], pipes: Pipe[], valves: Valve[]): ValidationResult {
   const errors: string[] = [];
   const nodeIds = new Set(nodes.map(n => n.id));
 
@@ -39,12 +39,18 @@ export function validateTopology(nodes: PIDNode[], pipes: Pipe[]): ValidationRes
 
   // バルブID重複チェック
   const seenValveIds = new Set<number>();
-  for (const pipe of pipes) {
-    if (pipe.valveId !== null) {
-      if (seenValveIds.has(pipe.valveId)) {
-        errors.push(`バルブID重複: ${pipe.valveId}`);
-      }
-      seenValveIds.add(pipe.valveId);
+  for (const valve of valves) {
+    if (seenValveIds.has(valve.id)) {
+      errors.push(`バルブID重複: ${valve.id}`);
+    }
+    seenValveIds.add(valve.id);
+  }
+
+  // バルブのpipeIdが実在パイプを参照しているか
+  const pipeIds = new Set(pipes.map(p => p.id));
+  for (const valve of valves) {
+    if (!pipeIds.has(valve.pipeId)) {
+      errors.push(`バルブ ${valve.id}: pipeId "${valve.pipeId}" は存在しないパイプ`);
     }
   }
 

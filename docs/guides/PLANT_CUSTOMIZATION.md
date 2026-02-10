@@ -528,9 +528,9 @@ dev モード（`npm run dev`）で起動すると、自動的にトポロジー
 
 ```typescript
 import { validateTopology } from './data/topologyValidator';
-import { nodes, pipes } from './data/sampleData';
+import { nodes, pipes, valves } from './data/sampleData';
 
-const result = validateTopology(nodes, pipes);
+const result = validateTopology(nodes, pipes, valves);
 console.log(result.valid, result.errors);
 ```
 
