@@ -50,6 +50,17 @@
 - Step4-4 [✅ resolved]: バリデータ更新（topologyValidator + テスト）【Phase 2 並列】
 - Step4-5 [✅ resolved]: UI統合（PIDCanvas, PIDSimulator + コンポーネントテスト）
 
+### Step 5: SVGファイルインポート機能（r19）
+目的: アプリ上からSVGファイルを読み込み、draw.ioで作成したP&ID画面を表示・操作可能にする
+完了条件: 全テストパス、SVGインポート→表示→バルブ/タンク操作→BFS動作、既存機能の動作維持
+ブランチ: feature/step5-svg-import（完了後 main にマージ）
+対象issue:
+- Step5-1 [🟡 open]: SVGパーサー + バリデーター（型定義・解析・検証）【Phase 1 並列】
+- Step5-2 [🟡 open]: deriveHelpers 抽出リファクタ【Phase 1 並列】
+- Step5-3 [🟡 open]: SVGCanvas コンポーネント【Phase 2】
+- Step5-4 [🟡 open]: PIDSimulator統合（SVGインポートUI + データソース切替）【Phase 3】
+- Step5-5 [🟡 open]: ドキュメント更新【Phase 4】
+
 ## 5. r-issue リスト（課題管理）
 運用ルールは `docs/process/DEVELOPMENT_PROCESS.md` を参照
 
@@ -71,6 +82,7 @@
 - r16 / 設定保存/読込 / 新要件 / 低 / 🟡 open
 - r17 / Step4並列作業によるコンポーネントテスト14件失敗 / 不具合 / 中 / ✅ resolved
 - r18 / brew shellenv の毎回手動実行を不要にする / 改善 / 中 / ✅ resolved
+- r19 / SVGファイルインポート機能（アプリ上からSVG読み込み→P&ID画面表示） / 新要件 / 中 / 🔵 in_progress
 
 ## 6. issue開発ログ（参照）
 - 保存先: `docs/logs/issues/`
