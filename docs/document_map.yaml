@@ -86,7 +86,29 @@ folders:
   - id: r_issue_logs
     path: docs/logs/r_issues
     meta: docs/logs/r_issues/meta.yaml
-    documents: []
+    documents:
+      - r1.md
+      - r2.md
+      - r3.md
+      - r4.md
+      - r5.md
+      - r6.md
+      - r7.md
+      - r8.md
+      - r9.md
+      - r10.md
+      - r11.md
+      - r12.md
+      - r13.md
+      - r14.md
+      - r15.md
+      - r16.md
+      - r17.md
+      - r18.md
+      - r19.md
+      - r20.md
+      - r21.md
+      - r22.md
   - id: handover
     path: docs/logs/handover
     meta: docs/logs/handover/meta.yaml
