@@ -53,6 +53,11 @@ folders:
         path: docs/guides/PLANT_CUSTOMIZATION.md
         responsibility: SVG作成手順、命名規則、描画ルール、React組込み、CSV設定
         status: 有効
+      - id: plant_customization_flow
+        title: プラント差し替えガイド（作業フロー順）
+        path: docs/guides/PLANT_CUSTOMIZATION_FLOW.md
+        responsibility: 作業フロー順の手順整理、draw.io作図〜アプリ読込〜CSV設定
+        status: 検証中
   - id: logs
     path: docs/logs
     meta: docs/logs/meta.yaml
@@ -109,6 +114,7 @@ folders:
       - r20.md
       - r21.md
       - r22.md
+      - r23.md
   - id: handover
     path: docs/logs/handover
     meta: docs/logs/handover/meta.yaml

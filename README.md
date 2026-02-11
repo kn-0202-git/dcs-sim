@@ -54,3 +54,4 @@ npm run process:install-hooks # commit-msg フックを有効化（任意）
 - 専門家パネル運用: `docs/process/EXPERT_PANEL.md`
 - アーキテクチャ: `docs/architecture/ARCHITECTURE.md`
 - プラント差し替えガイド: `docs/guides/PLANT_CUSTOMIZATION.md`
+- プラント差し替えガイド（作業フロー順）: `docs/guides/PLANT_CUSTOMIZATION_FLOW.md`
