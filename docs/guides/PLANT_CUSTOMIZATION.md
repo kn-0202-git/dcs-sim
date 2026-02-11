@@ -322,6 +322,40 @@ SVG内の要素に **data属性** を付けて、配管・バルブ・タンク�
 2. 右クリック → **「データを編集」**（ショートカット: `Ctrl+M` / macは `Cmd+M`）
 3. `data-from`, `data-to`, `data-pipe`, `data-tank-id` をキー/値で追加
 
+#### スタイル編集テンプレ（右クリック → 「スタイルを編集」）
+
+**注意:** 既存のスタイル文字列を消さず、**末尾に追記**してください（`;` 区切り）。
+
+配管（pipe）
+```text
+id=pipe-1;data-from=input;data-to=connection-1;
+```
+
+バルブ（valve）
+```text
+id=valve-1;data-pipe=pipe-1;
+```
+
+タンク（tank）
+```text
+id=tank-T1;data-tank-id=1;
+```
+
+供給元（input）
+```text
+id=input;
+```
+
+出口（outlet）
+```text
+id=outlet;
+```
+
+接続点（connection）
+```text
+id=connection-1;
+```
+
 ### 6.3 ノードIDの命名ルール（input/outlet/connection）
 
 `data-from` / `data-to` で参照する **ノードID** は、以下の命名規則に従います。
