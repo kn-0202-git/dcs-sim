@@ -89,6 +89,8 @@ checklist:
 - 記録タイミング: レビュー後、または指定があったとき
 - その他のタイミングでは「r-issueとして記録しますか？」と確認する
 - r-issueの詳細ログは `docs/logs/r_issues/` に作成し、issueログと同様に記録する
+- 正本テンプレート: `docs/logs/r_issues/R_ISSUE_LOG_TEMPLATE.md`
+- テンプレート変更時は `docs/logs/r_issues/R_ISSUE_LOG_TEMPLATE_HISTORY.md` に「変更案/理由/何が起きたか/実施内容」を記録する
 
 ## 5. TDDの進め方
 1) **Red**: 先にテストを書く（API/入出力/境界条件）
