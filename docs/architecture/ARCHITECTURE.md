@@ -10,33 +10,36 @@
 ## 3. 技術スタック
 - 言語/環境: TypeScript + Node.js（開発環境のみ）
 - フレームワーク: React 19
-- ビルド: Vite 6
+- ビルド: Vite 7
 - テスト: Vitest + @testing-library/react
 - スタイリング: インラインスタイル
 - 描画: SVG（ブラウザネイティブ）
 
 ## 4. データソース
-- P&IDトポロジーデータ: TypeScriptファイル内の定数定義（nodes, pipes）
-- 教育データ: CSV形式（phases, steps, rules）- ブラウザ上で編集可能
+- 標準トポロジー: TypeScript定数（`sampleData.ts` の nodes/pipes/valves）
+- SVGトポロジー: アップロードSVGを parse/validate/build して生成（`svgParser`/`svgValidator`/`svgTopology`）
+- 教育データ: CSV形式（phases, steps, rules）をブラウザ上で編集・反映
 
 ## 5. システム構成
 
 ```
 PIDSimulator (Root Component)
+├── Data Source Layer
+│   ├── sample topology (nodes/pipes/valves)
+│   └── svg topology (upload -> parse -> validate -> build)
 ├── State Layer
-│   ├── valves: Record<string, boolean>     (useState)
-│   ├── tankFilled: Record<string, boolean>  (useState)
-│   └── reachableNodes: Set<string>          (useMemo, BFS)
-├── Data Layer
-│   ├── nodes: Node[]          (定数データ)
-│   └── pipes: Pipe[]          (定数データ)
+│   ├── dataSource: 'sample' | 'svg'
+│   ├── valves / tankFilled (useState)
+│   └── reachableNodes (useMemo, BFS)
 ├── Logic Layer
 │   ├── computeReachableNodes()   (BFS algorithm)
 │   └── isPipeActive()            (pipe flow check)
 ├── UI Layer
 │   ├── ValveControlPanel
 │   ├── TankControlPanel
-│   ├── PIDCanvas (SVG)
+│   ├── PIDCanvas (標準データ描画)
+│   ├── SVGCanvas (アップロードSVG描画)
+│   ├── SVG Upload UI (file input + status)
 │   │   ├── PipeRenderer
 │   │   ├── ValveRenderer
 │   │   ├── TankRenderer
@@ -50,11 +53,11 @@ PIDSimulator (Root Component)
 ```
 
 ## 6. データフロー
-1. ユーザーがバルブ/タンクをクリック → toggleValve()/toggleTank()ハンドラ発火
-2. useState が valves/tankFilled 状態を更新
-3. useMemo が reachableNodes を BFS で再計算
-4. React が SVG要素を新しい reachableNodes に基づいて再レンダリング
-5. 配管色、バルブ色、タンク色がリアクティブに更新
+1. ユーザーがSVGをアップロード（任意） → parse/validate/build でSVGトポロジーを生成
+2. 生成成功時は `dataSource='svg'`、失敗時はエラー表示して標準データへフォールバック
+3. ユーザーがバルブ/タンクを操作 → toggleValve()/toggleTank() で状態更新
+4. useMemo が reachableNodes を BFS で再計算
+5. 選択中データソースに応じて PIDCanvas または SVGCanvas が描画更新
 
 ## 7. デプロイ
 - GitHub Pages: main push 時に GitHub Actions で自動デプロイ（`.github/workflows/deploy.yml`）
@@ -71,3 +74,4 @@ PIDSimulator (Root Component)
 ## 9. 関連ドキュメント
 - 要件: `docs/requirements/REQUIREMENTS.md`
 - 仕様書: `pid-simulator-specification.md`
+- ガイド: `docs/guides/PLANT_CUSTOMIZATION.md`

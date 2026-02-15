@@ -115,6 +115,8 @@ folders:
       - r21.md
       - r22.md
       - r23.md
+      - r24.md
+      - r25.md
   - id: handover
     path: docs/logs/handover
     meta: docs/logs/handover/meta.yaml
