@@ -146,4 +146,73 @@ describe('PIDSimulator', () => {
       expect(screen.getByText('V6:X')).toBeInTheDocument();
     });
   });
+
+  describe('SVGアップロード', () => {
+    it('draw.io(mxGraph)SVGをアップロードして適用できる', async () => {
+      const user = userEvent.setup();
+      const { container } = render(<PIDSimulator />);
+      const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+
+      const mxGraphXml = `
+<mxGraphModel>
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="input" vertex="1" parent="1"/>
+    <mxCell id="valve-1" vertex="1" parent="1"/>
+    <mxCell id="tank-T1" vertex="1" parent="1"/>
+    <mxCell id="outlet" vertex="1" parent="1"/>
+    <mxCell id="pipe-1" edge="1" source="input" target="valve-1" parent="1"/>
+    <mxCell id="pipe-2" edge="1" source="valve-1" target="tank-T1" parent="1"/>
+    <mxCell id="pipe-3" edge="1" source="tank-T1" target="outlet" parent="1"/>
+  </root>
+</mxGraphModel>
+      `.trim();
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" content="${encodeURIComponent(mxGraphXml)}"></svg>`;
+      const file = new File([svg], 'mxgraph.svg', { type: 'image/svg+xml' });
+
+      await user.upload(input, file);
+
+      expect(await screen.findByText(/SVG: mxgraph\.svg/)).toBeInTheDocument();
+      expect(screen.queryByText('V8:X')).not.toBeInTheDocument();
+      expect(screen.getByText('V1:X')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'SVG' })).toBeEnabled();
+    });
+
+    it('mxGraphが不正でもdata属性が有効なら警告付きで適用できる', async () => {
+      const user = userEvent.setup();
+      const { container } = render(<PIDSimulator />);
+      const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+
+      const invalidMx = '<mxGraphModel><root><mxCell id="0"/></root></mxGraphModel>';
+      const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" content="${encodeURIComponent(invalidMx)}">
+  <path id="pipe-1" data-from="input" data-to="tank-T1" d="M0 0" />
+  <path id="pipe-2" data-from="tank-T1" data-to="outlet" d="M1 1" />
+  <circle id="valve-1" data-pipe="pipe-1" r="5" />
+  <rect id="tank-T1" data-tank-id="1" width="10" height="10" />
+</svg>
+      `.trim();
+      const file = new File([svg], 'fallback.svg', { type: 'image/svg+xml' });
+
+      await user.upload(input, file);
+
+      expect(await screen.findByText('mxGraphの解析結果が不正のため、data-*属性の解析結果を使用しました')).toBeInTheDocument();
+      expect(screen.getByText(/SVG: fallback\.svg/)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'SVG' })).toBeEnabled();
+    });
+
+    it('不正SVGのアップロード時はエラー表示してsampleへフォールバックする', async () => {
+      const user = userEvent.setup();
+      const { container } = render(<PIDSimulator />);
+      const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+      const file = new File(['<svg><path></svg'], 'broken.svg', { type: 'image/svg+xml' });
+
+      await user.upload(input, file);
+
+      expect(await screen.findByText('SVGの解析に失敗しました')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'SVG' })).toBeDisabled();
+      expect(screen.getByText('V8:X')).toBeInTheDocument();
+    });
+  });
 });

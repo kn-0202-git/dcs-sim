@@ -69,8 +69,8 @@
 - Step6-1 [✅ resolved]: r26ログ/PLAN更新（スコープ・完了条件・検証観点の確定）
 - Step6-2 [✅ resolved]: mxGraph抽出統合（`svgTopology.ts` に `mxGraphExtractor` + `mxGraphParser` 経路を追加）
 - Step6-3 [✅ resolved]: PIDSimulator連携（SVGアップロード処理の非同期化とエラーハンドリング）
-- Step6-4 [🔵 in_progress]: テスト拡張（draw.io SVG成功系、既存 `data-*` 互換、異常系）
-- Step6-5 [🟡 open]: ドキュメント同期（requirements/guides/r-issue の整合更新）
+- Step6-4 [✅ resolved]: テスト拡張（draw.io SVG成功系、既存 `data-*` 互換、異常系）
+- Step6-5 [✅ resolved]: ドキュメント同期（requirements/guides/r-issue の整合更新）
 
 ## 5. r-issue リスト（課題管理）
 運用ルールは `docs/process/DEVELOPMENT_PROCESS.md` を参照
@@ -100,7 +100,7 @@
 - r23 / プラント差し替えガイドの作業フロー順リライト（新規ファイル化） / 改善 / 中 / 🟡 open
 - r24 / r-issueログテンプレート更新（r22/r23のr21+準拠化） / 改善 / 高 / ✅ resolved
 - r25 / 要件・計画・ガイド間の不整合解消（レビュー対応） / 改善 / 高 / ✅ resolved
-- r26 / draw.io SVGからトポロジー自動抽出（mxGraph XML解析によるdata属性手動付与の廃止） / 改善 / 中 / 🟡 open
+- r26 / draw.io SVGからトポロジー自動抽出（mxGraph XML解析によるdata属性手動付与の廃止） / 改善 / 中 / ✅ resolved
 
 ## 6. issue開発ログ（参照）
 - 保存先: `docs/logs/issues/`
