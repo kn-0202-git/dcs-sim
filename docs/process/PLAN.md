@@ -61,6 +61,17 @@
 - Step5-4 [✅ resolved]: PIDSimulator統合（SVGインポートUI + データソース切替）【Phase 3】
 - Step5-5 [✅ resolved]: ドキュメント更新【Phase 4】
 
+### Step 6: draw.io SVG自動トポロジー抽出（r26）
+目的: draw.io SVGのmxGraph XMLから接続情報を抽出し、`data-*` 手動付与なしでSVGインポートを成立させる
+完了条件: draw.io SVGと既存 `data-*` SVG の両方で読み込み成功し、`npm test` と `npm run process:check` が通る
+ブランチ: codex/process-governance-standardization（完了後 main にマージ）
+対象issue:
+- Step6-1 [✅ resolved]: r26ログ/PLAN更新（スコープ・完了条件・検証観点の確定）
+- Step6-2 [✅ resolved]: mxGraph抽出統合（`svgTopology.ts` に `mxGraphExtractor` + `mxGraphParser` 経路を追加）
+- Step6-3 [✅ resolved]: PIDSimulator連携（SVGアップロード処理の非同期化とエラーハンドリング）
+- Step6-4 [🔵 in_progress]: テスト拡張（draw.io SVG成功系、既存 `data-*` 互換、異常系）
+- Step6-5 [🟡 open]: ドキュメント同期（requirements/guides/r-issue の整合更新）
+
 ## 5. r-issue リスト（課題管理）
 運用ルールは `docs/process/DEVELOPMENT_PROCESS.md` を参照
 

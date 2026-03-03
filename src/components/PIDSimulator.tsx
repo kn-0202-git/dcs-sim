@@ -200,22 +200,33 @@ export function PIDSimulator() {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       const text = typeof reader.result === 'string' ? reader.result : '';
-      const result = buildSvgTopology(text);
-      if (!result.valid || !result.topology) {
-        setSvgStatus({ fileName: file.name, errors: result.errors, warnings: result.warnings });
+      try {
+        const result = await buildSvgTopology(text);
+        if (!result.valid || !result.topology) {
+          setSvgStatus({ fileName: file.name, errors: result.errors, warnings: result.warnings });
+          setSvgTopology(null);
+          setSvgText('');
+          setDataSource('sample');
+          return;
+        }
+
+        setSvgStatus({ fileName: file.name, errors: [], warnings: result.warnings });
+        setSvgTopology(result.topology);
+        setSvgText(text);
+        setDataSource('svg');
+        resetAllWith(result.topology.helpers);
+      } catch {
+        setSvgStatus({
+          fileName: file.name,
+          errors: ['SVG読み込み中に予期しないエラーが発生しました'],
+          warnings: [],
+        });
         setSvgTopology(null);
         setSvgText('');
         setDataSource('sample');
-        return;
       }
-
-      setSvgStatus({ fileName: file.name, errors: [], warnings: result.warnings });
-      setSvgTopology(result.topology);
-      setSvgText(text);
-      setDataSource('svg');
-      resetAllWith(result.topology.helpers);
     };
     reader.readAsText(file);
     event.target.value = '';
